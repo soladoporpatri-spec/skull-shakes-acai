@@ -71,7 +71,7 @@ export default function CheckoutAddress({ address, updateAddress, errors }: Prop
           deliveryFee: fee
         });
         setCepStatus('success');
-        setCepMsg(fee !== null ? `Endereço encontrado (Distância: ${distance?.toFixed(1)}km)` : 'Endereço encontrado (Distância exata indisponível)');
+        setCepMsg(fee !== null ? `Endereço encontrado (Entrega: R$ ${fee.toFixed(2).replace('.', ',')})` : 'Endereço encontrado (Distância exata indisponível)');
       } catch (err: any) {
         setCepStatus('error');
         setCepMsg(err.message === 'not_found' ? 'CEP não encontrado. Preencha manualmente.' : 'Erro ao buscar CEP. Preencha manualmente.');
