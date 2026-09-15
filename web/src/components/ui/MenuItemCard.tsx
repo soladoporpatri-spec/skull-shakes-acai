@@ -45,13 +45,13 @@ export default function MenuItemCard({ item, isInCart, onAdd }: any) {
           </p>
           <div className="text-zinc-500 text-[10px] mt-3 font-bold uppercase tracking-widest">500 ml</div>
         </div>
-        <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto">
-          <span className="font-display text-3xl text-white">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between md:justify-end gap-4 sm:gap-6 w-full md:w-auto mt-2 md:mt-0">
+          <span className="font-display text-2xl sm:text-3xl text-white">
             R$ {totalPrice.toFixed(2).replace('.', ',')}
           </span>
           <button 
             onClick={handleAdd} 
-            className={`flex items-center gap-2 border px-6 py-3 text-sm uppercase font-bold transition-all ${(!item.customizable && isInCart(item.id)) ? 'bg-brand border-brand text-white' : 'border-white/20 text-white hover:bg-white hover:text-black hover:border-white bg-black/30'}`}
+            className={`flex items-center justify-center w-full sm:w-auto gap-2 border px-6 py-3 text-sm uppercase font-bold transition-all ${(!item.customizable && isInCart(item.id)) ? 'bg-brand border-brand text-white' : 'border-white/20 text-white hover:bg-white hover:text-black hover:border-white bg-black/30'}`}
           >
             {(!item.customizable && isInCart(item.id)) ? <Check size={16} /> : (item.customizable && !expanded ? <Plus size={16} /> : <ShoppingBag size={16} />)}
             {(!item.customizable && isInCart(item.id)) ? 'Adicionado' : (item.customizable && !expanded ? 'Montar' : 'Adicionar')}

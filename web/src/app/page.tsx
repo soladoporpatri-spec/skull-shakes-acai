@@ -212,7 +212,7 @@ export default function Home() {
                 </motion.span>
                 <motion.h2 
                   animate={{ color: activeHero.theme.text }}
-                  className="text-[4.5rem] md:text-[7rem] font-black uppercase leading-[0.85] tracking-tight mb-8 drop-shadow-sm"
+                  className="text-[14vw] sm:text-[4.5rem] md:text-[7rem] font-black uppercase leading-[0.85] tracking-tight mb-8 drop-shadow-sm"
                 >
                   {activeHero.shortName}
                 </motion.h2>
