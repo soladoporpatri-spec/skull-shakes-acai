@@ -15,11 +15,11 @@ const anton = Anton({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://skullshakes.com.br"),
-  title: "Skull Shakes | Açaí Premium & Batidinhas Gourmet",
+  title: "Skull Shakes | Açaí",
   description: "Açaí expresso super cremoso e batidinhas gourmet prontas pra beber. O melhor de Anápolis. Delivery rápido e prático.",
-  keywords: ["açaí", "açaiteria", "batidinhas", "skull shakes", "delivery", "anápolis", "açaí premium"],
+  keywords: ["açaí", "açaiteria", "batidinhas", "skull shakes", "delivery", "anápolis"],
   openGraph: {
-    title: "Skull Shakes | Açaí Premium",
+    title: "Skull Shakes | Açaí",
     description: "Açaí expresso super cremoso e batidinhas gourmet prontas pra beber.",
     url: "https://skullshakes.com.br", // URL de produção
     siteName: "Skull Shakes",
