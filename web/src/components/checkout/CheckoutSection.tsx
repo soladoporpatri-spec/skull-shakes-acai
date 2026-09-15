@@ -46,9 +46,9 @@ export default function CheckoutSection() {
   if (status === 'success') {
     return (
       <section id="checkout" className="w-full min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center py-24 px-4 border-t border-white/5 relative z-10">
-        <h2 className="text-5xl md:text-7xl font-display font-bold mb-6 uppercase text-center text-white">Pedido Preparado!</h2>
+        <h2 className="text-5xl md:text-7xl font-display font-bold mb-6 uppercase text-center text-white">PEDIDO PREPARADO!</h2>
         <p className="text-zinc-400 mb-12 max-w-lg text-center text-lg leading-relaxed">
-          Sua solicitação foi processada. Em um ambiente real, você seria redirecionado para o acompanhamento do entregador.
+          Tudo certo com o seu pedido.<br/>Isso é uma versão de demonstração visual!
         </p>
         <button onClick={() => {
           setStatus('idle');
