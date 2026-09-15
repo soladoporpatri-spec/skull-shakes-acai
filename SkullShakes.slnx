@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="SkullShakes.Api/SkullShakes.Api.csproj" />
+  <Project Path="SkullShakes.Application/SkullShakes.Application.csproj" />
+  <Project Path="SkullShakes.Domain/SkullShakes.Domain.csproj" />
+  <Project Path="SkullShakes.Infrastructure/SkullShakes.Infrastructure.csproj" />
+</Solution>

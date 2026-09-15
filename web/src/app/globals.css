@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #bd00ff; /* Updated to a magenta/purple like the reference */
+  --color-dark: #0A0A0A; /* True Black */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-anton), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: #0d0a0b; /* Very dark purple/black */
+    --foreground: #ffffff;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

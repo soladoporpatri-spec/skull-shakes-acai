@@ -1,0 +1,6 @@
+@SkullShakes.Api_HostAddress = http://localhost:5148
+
+GET {{SkullShakes.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
