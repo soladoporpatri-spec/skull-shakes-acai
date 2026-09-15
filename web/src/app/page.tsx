@@ -193,7 +193,7 @@ export default function Home() {
         <div className="relative w-full max-w-7xl h-full grid grid-cols-1 md:grid-cols-2 flex-1 mt-32 md:mt-0">
           
           {/* Left Column: Huge Title & Description */}
-          <div className="flex flex-col justify-center px-8 md:pl-20 z-20 order-2 md:order-1 pt-8 md:pt-0 pb-32 md:pb-0">
+          <div className="flex flex-col justify-center px-5 sm:px-8 md:px-0 md:pl-20 z-20 order-2 md:order-1 pt-8 md:pt-0 pb-32 md:pb-0 w-full overflow-hidden">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={activeHero.id}
@@ -202,7 +202,7 @@ export default function Home() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                className="flex flex-col items-start"
+                className="flex flex-col items-start w-full"
               >
                 <motion.span 
                    animate={{ color: activeHero.theme.text }}
@@ -212,7 +212,7 @@ export default function Home() {
                 </motion.span>
                 <motion.h2 
                   animate={{ color: activeHero.theme.text }}
-                  className="text-[14vw] sm:text-[4.5rem] md:text-[7rem] font-black uppercase leading-[0.85] tracking-tight mb-8 drop-shadow-sm"
+                  className="text-[11vw] sm:text-[4.5rem] md:text-[7rem] font-black uppercase leading-[0.85] tracking-tight mb-8 drop-shadow-sm break-words max-w-full"
                 >
                   {activeHero.shortName}
                 </motion.h2>
