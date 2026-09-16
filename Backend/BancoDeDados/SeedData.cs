@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using SkullShakes.Api.BancoDeDados;
 using SkullShakes.Api.Modelos;
 using System.Linq;
@@ -13,6 +13,9 @@ public static class SeedData
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        
+        // Garante que o banco e as tabelas sejam criados se nÃ£o existirem
+        context.Database.EnsureCreated();
         
         if (!context.AdminUsers.Any())
         {
