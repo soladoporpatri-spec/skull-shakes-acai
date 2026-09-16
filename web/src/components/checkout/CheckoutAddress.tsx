@@ -7,7 +7,7 @@ import { Loader2 } from 'lucide-react';
 const STORE_LAT = -16.32667;
 const STORE_LNG = -48.95278;
 const BASE_FEE = 3.00;
-const COST_PER_KM = 1.50;
+const COST_PER_KM = 1.00;
 
 type Props = {
   address: CheckoutState['address'];
@@ -55,8 +55,8 @@ export default function CheckoutAddress({ address, updateAddress, errors }: Prop
         let distance = null;
         let fee = null;
         
-        if (data.lat && data.lng) {
-            distance = calculateDistance(STORE_LAT, STORE_LNG, parseFloat(data.lat), parseFloat(data.lng));
+        if (data.lat !== null && data.lng !== null) {
+            distance = calculateDistance(STORE_LAT, STORE_LNG, data.lat, data.lng);
             fee = BASE_FEE + (distance * COST_PER_KM);
         }
 
@@ -65,8 +65,8 @@ export default function CheckoutAddress({ address, updateAddress, errors }: Prop
           neighborhood: data.neighborhood, 
           city: data.city, 
           state: data.state,
-          lat: data.lat,
-          lng: data.lng,
+          lat: data.lat ? data.lat.toString() : null,
+          lng: data.lng ? data.lng.toString() : null,
           distance: distance,
           deliveryFee: fee
         });
@@ -74,7 +74,7 @@ export default function CheckoutAddress({ address, updateAddress, errors }: Prop
         setCepMsg(fee !== null ? `Endereço encontrado (Entrega: R$ ${fee.toFixed(2).replace('.', ',')})` : 'Endereço encontrado (Distância exata indisponível)');
       } catch (err: any) {
         setCepStatus('error');
-        setCepMsg(err.message === 'not_found' ? 'CEP não encontrado. Preencha manualmente.' : 'Erro ao buscar CEP. Preencha manualmente.');
+        setCepMsg(err.message === 'not_found' ? 'CEP não encontrado. Preencha manualmente.' : `Erro: ${err.message}`);
       }
     } else {
       setCepStatus('idle');

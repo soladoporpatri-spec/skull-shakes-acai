@@ -344,6 +344,37 @@ export default function Home() {
       </section>
 
       <CheckoutSection />
+
+      {/* Footer Section */}
+      <footer className="w-full bg-black border-t border-white/10 py-12 px-6">
+        <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col items-center md:items-start">
+            <h2 className="text-xl font-display font-black tracking-widest uppercase">
+              <span className="text-white">Skull</span> <span className="bg-gradient-to-r from-[#d946ef] to-[#a855f7] bg-clip-text text-transparent">Shakes</span>
+            </h2>
+            <p className="text-zinc-500 text-sm mt-2">© {new Date().getFullYear()} Todos os direitos reservados.</p>
+          </div>
+          
+          <div className="flex gap-8">
+            <a 
+              href="https://instagram.com/skullshakes" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 text-sm uppercase tracking-widest font-bold"
+            >
+              Instagram
+            </a>
+            <a 
+              href="https://wa.me/5562998832935" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-zinc-400 hover:text-white transition-colors flex items-center gap-2 text-sm uppercase tracking-widest font-bold"
+            >
+              WhatsApp
+            </a>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }

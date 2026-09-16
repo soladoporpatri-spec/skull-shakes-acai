@@ -64,9 +64,16 @@ export default function OrderSummary({ onSubmit, isSubmitting, status, deliveryF
         </div>
       </div>
 
-      <div className="flex justify-between items-end mb-12">
+      <div className="flex justify-between items-end mb-8">
         <span className="text-sm font-bold uppercase tracking-widest text-zinc-400">Total</span>
         <span className="text-4xl font-display text-white">R$ {total.toFixed(2).replace('.', ',')}</span>
+      </div>
+
+      <div className="mb-8 p-4 bg-white/5 border border-white/10 rounded-none text-center">
+        <p className="text-zinc-300 text-sm font-light">
+          Prazo estimado de entrega: <br />
+          <strong className="text-white font-bold">mínimo 30 minutos e máximo 2 horas</strong>
+        </p>
       </div>
 
       <button 

@@ -1,20 +1,15 @@
-export async function lookupAddressByCep(cep: string) {
+﻿export async function lookupAddressByCep(cep: string) {
   const clean = cep.replace(/\D/g, '');
   if (clean.length !== 8) throw new Error('invalid_format');
   try {
-    const res = await fetch(`https://brasilapi.com.br/api/cep/v2/${clean}`);
-    if (!res.ok) throw new Error('service_error');
+    const res = await fetch('/api/cep/' + clean);
     const data = await res.json();
-    if (data.errors || data.message) throw new Error('not_found');
     
-    return {
-      street: data.street || '',
-      neighborhood: data.neighborhood || '',
-      city: data.city || '',
-      state: data.state || '',
-      lat: data.location?.coordinates?.latitude || null,
-      lng: data.location?.coordinates?.longitude || null,
-    };
+    if (!res.ok) {
+      throw new Error(data.error || 'service_error');
+    }
+
+    return data;
   } catch (err) {
     throw err;
   }

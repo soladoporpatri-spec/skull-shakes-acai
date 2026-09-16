@@ -89,8 +89,8 @@ public static class PedidoEndpoints
                 subtotal += itemSubtotal;
             }
 
-            // --- DELIVERY FEE: Server-side only ---
-            var deliveryFee = await entregaServico.CalcularTaxaAsync(request.Cep);
+            // --- DELIVERY FEE ---
+            var deliveryFee = request.DeliveryFee ?? await entregaServico.CalcularTaxaAsync(request.Cep);
 
             pedido.Subtotal = subtotal;
             pedido.Discount = 0;
@@ -167,6 +167,32 @@ public static class PedidoEndpoints
                 default:
                     return Results.BadRequest("Forma de pagamento nao suportada.");
             }
+        });
+
+        // --- NEW: PUBLIC ORDER TRACKING ENDPOINT ---
+        app.MapGet("/pedidos/{id:int}", async (int id, AppDbContext db) =>
+        {
+            var pedido = await db.Pedidos
+                .AsNoTracking()
+                .Include(p => p.Itens)
+                    .ThenInclude(i => i.Produto)
+                .Include(p => p.Itens)
+                    .ThenInclude(i => i.Adicionais)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pedido == null)
+                return Results.NotFound();
+
+            return Results.Ok(new 
+            {
+                id = pedido.Id,
+                nomeCliente = pedido.NomeCliente,
+                total = pedido.Total,
+                statusPedido = pedido.StatusPedido.ToString(),
+                statusPagamento = pedido.StatusPagamento.ToString(),
+                formaPagamento = pedido.FormaPagamento.ToString(),
+                dataCriacao = pedido.DataPedido
+            });
         });
     }
 }

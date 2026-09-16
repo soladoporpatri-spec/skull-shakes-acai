@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
+import Link from 'next/link';
 import { useCheckout } from '@/hooks/useCheckout';
 import CheckoutAddress from './CheckoutAddress';
 import PaymentMethod from './PaymentMethod';
@@ -12,11 +13,12 @@ import { useCartStore } from '@/store/cartStore';
 // ---------------------------------------------------------------------------
 type PixData = {
   qrCodeBase64: string;
-  qrCode: string; // the "copia e cola" string
+  qrCode: string;
 };
 
 type OrderResponse = {
   id?: number | string;
+  pedidoId?: number;
   pix?: PixData;
   checkoutUrl?: string;
 };
@@ -34,6 +36,7 @@ export default function CheckoutSection() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>('idle');
   const [pixData, setPixData] = useState<PixData | null>(null);
+  const [createdOrderId, setCreatedOrderId] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
 
   // Idempotency key - generated once per mount, lives for the component lifecycle.
@@ -93,16 +96,18 @@ export default function CheckoutSection() {
           .join(', '),
         formaPagamento: state.payment.method, // already the backend enum value
         observacoes: state.notes,
+        deliveryFee: state.address.deliveryFee,
         idempotencyKey: idempotencyKeyRef.current,
         itens: cartItems.map((item) => ({
-          produtoId: item.id,
+          produtoId: parseInt(item.id, 10),
           quantidade: item.quantity,
-          adicionaisIds: [] as string[],
+          adicionaisIds: [] as number[],
         })),
       };
 
       // Public endpoint - no authentication header required
-      const response = await fetch('http://localhost:5210/pedidos', {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5210';
+      const response = await fetch(`${API_URL}/pedidos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -118,6 +123,10 @@ export default function CheckoutSection() {
       }
 
       const data: OrderResponse = await response.json();
+
+      if (data.pedidoId) {
+        setCreatedOrderId(data.pedidoId);
+      }
 
       // Route based on payment method response
       if (data.pix) {
@@ -164,12 +173,19 @@ export default function CheckoutSection() {
         id="checkout"
         className="w-full min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center py-24 px-4 border-t border-white/5 relative z-10"
       >
-        <h2 className="text-5xl md:text-7xl font-display font-bold mb-4 uppercase text-center text-white">
+                <h2 className="text-5xl md:text-7xl font-display font-bold mb-4 uppercase text-center text-white">
           PAGUE VIA PIX
         </h2>
-        <p className="text-zinc-400 mb-12 max-w-lg text-center text-lg leading-relaxed">
+        <p className="text-zinc-400 mb-6 max-w-lg text-center text-lg leading-relaxed">
           Escaneie o QR Code ou copie o código abaixo para finalizar seu pedido.
         </p>
+        
+        <div className="mb-8 p-4 border border-white/10 bg-white/5 text-center w-full max-w-lg">
+          <p className="text-zinc-300 text-sm font-light">
+            Prazo estimado de entrega: <br />
+            <strong className="text-white font-bold">mínimo 30 minutos e máximo 2 horas</strong>
+          </p>
+        </div>
 
         {/* QR Code image */}
         <div className="mb-8 p-4 bg-white rounded-xl">
@@ -221,23 +237,41 @@ export default function CheckoutSection() {
         id="checkout"
         className="w-full min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center py-24 px-4 border-t border-white/5 relative z-10"
       >
-        <h2 className="text-5xl md:text-7xl font-display font-bold mb-6 uppercase text-center text-white">
+                <h2 className="text-5xl md:text-7xl font-display font-bold mb-6 uppercase text-center text-white">
           PEDIDO RECEBIDO!
         </h2>
-        <p className="text-zinc-400 mb-12 max-w-lg text-center text-lg leading-relaxed">
+        <p className="text-zinc-400 mb-6 max-w-lg text-center text-lg leading-relaxed">
           Seu pedido foi registrado com sucesso.<br />
           Em breve entraremos em contato para confirmar a entrega.
         </p>
-        <button
-          type="button"
-          onClick={() => {
-            setStatus('idle');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          className="px-10 py-5 bg-white text-black font-bold uppercase tracking-widest text-sm hover:bg-zinc-200 transition-colors shadow-xl"
-        >
-          Voltar ao Início
-        </button>
+
+        <div className="mb-12 p-4 border border-white/10 bg-white/5 text-center w-full max-w-lg">
+          <p className="text-zinc-300 text-sm font-light">
+            Prazo estimado de entrega: <br />
+            <strong className="text-white font-bold">mínimo 30 minutos e máximo 2 horas</strong>
+          </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-4 items-center">
+          {createdOrderId && (
+            <Link 
+              href={`/pedido/${createdOrderId}`}
+              className="px-10 py-5 bg-white text-black font-bold uppercase tracking-widest text-sm hover:bg-zinc-200 transition-colors shadow-xl"
+            >
+              Acompanhar Pedido
+            </Link>
+          )}
+          <button
+            type="button"
+            onClick={() => {
+              setStatus('idle');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="px-10 py-5 bg-transparent border border-white text-white font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-colors"
+          >
+            Voltar ao Início
+          </button>
+        </div>
       </section>
     );
   }

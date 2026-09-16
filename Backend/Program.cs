@@ -62,7 +62,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendPolicy", policy =>
         // TODO: Add production domain before deploying
-        policy.WithOrigins("http://localhost:3000", "https://skullshakes.com.br")
+        policy.WithOrigins("http://localhost:3000", "http://localhost:3001", "https://skullshakes.com.br")
               .AllowAnyHeader().AllowAnyMethod());
 });
 
@@ -103,6 +103,8 @@ app.UseRateLimiter();
 app.UseCors("FrontendPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
+
+SkullShakes.Api.BancoDeDados.SeedData.Initialize(app.Services);
 
 app.MapGet("/", () => "Skull Shakes API funcionando!");
 

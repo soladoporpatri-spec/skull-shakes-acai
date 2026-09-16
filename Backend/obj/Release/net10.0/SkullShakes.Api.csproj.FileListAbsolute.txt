@@ -1,9 +1,0 @@
-C:\Meus itens\Criação\Programação\Barbearia-v2\acai\Backend\obj\Release\net10.0\SkullShakes.Api.csproj.AssemblyReference.cache
-C:\Meus itens\Criação\Programação\Barbearia-v2\acai\Backend\obj\Release\net10.0\rpswa.dswa.cache.json
-C:\Meus itens\Criação\Programação\Barbearia-v2\acai\Backend\obj\Release\net10.0\SkullShakes.Api.GeneratedMSBuildEditorConfig.editorconfig
-C:\Meus itens\Criação\Programação\Barbearia-v2\acai\Backend\obj\Release\net10.0\SkullShakes.Api.AssemblyInfoInputs.cache
-C:\Meus itens\Criação\Programação\Barbearia-v2\acai\Backend\obj\Release\net10.0\SkullShakes.Api.AssemblyInfo.cs
-C:\Meus itens\Criação\Programação\Barbearia-v2\acai\Backend\obj\Release\net10.0\SkullShakes.Api.csproj.CoreCompileInputs.cache
-C:\Meus itens\Criação\Programação\Barbearia-v2\acai\Backend\obj\Release\net10.0\SkullShakes.Api.MvcApplicationPartsAssemblyInfo.cs
-C:\Meus itens\Criação\Programação\Barbearia-v2\acai\Backend\obj\Release\net10.0\SkullShakes.Api.MvcApplicationPartsAssemblyInfo.cache
-C:\Meus itens\Criação\Programação\Barbearia-v2\acai\Backend\obj\Release\net10.0\SkullShakes.Api.sourcelink.json
