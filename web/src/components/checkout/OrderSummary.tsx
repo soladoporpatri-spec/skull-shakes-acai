@@ -4,7 +4,7 @@ import { Loader2 } from 'lucide-react';
 type Props = {
   onSubmit: () => void;
   isSubmitting: boolean;
-  status: 'idle' | 'submitting' | 'success';
+  status: 'idle' | 'submitting' | 'success' | 'pix_pending';
   deliveryFee: number | null;
 };
 

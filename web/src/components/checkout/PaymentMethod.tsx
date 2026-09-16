@@ -6,7 +6,13 @@ type Props = {
   errors: Record<string, string>;
 };
 
-const METHODS = ['PIX', 'Cartão de Crédito', 'Cartão de Débito', 'Dinheiro'];
+/** Maps Portuguese display labels to backend enum names */
+const METHODS: { label: string; value: string }[] = [
+  { label: 'PIX',               value: 'Pix'           },
+  { label: 'Cartão de Crédito', value: 'CreditCard'    },
+  { label: 'Cartão de Débito',  value: 'DebitCard'     },
+  { label: 'Dinheiro',          value: 'PayOnDelivery' },
+];
 
 export default function PaymentMethod({ payment, updatePayment, errors }: Props) {
   return (
@@ -15,26 +21,27 @@ export default function PaymentMethod({ payment, updatePayment, errors }: Props)
         Forma de Pagamento
         {errors.method && <span className="text-red-400 text-xs tracking-widest font-normal">{errors.method}</span>}
       </h3>
-      <p className="text-zinc-400 mb-8 font-light text-sm">Pagamento será realizado na entrega.</p>
+      <p className="text-zinc-400 mb-8 font-light text-sm">PIX e cartão via link seguro. Dinheiro na entrega.</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {METHODS.map(m => (
+        {METHODS.map(({ label, value }) => (
           <button
-            key={m}
-            onClick={() => updatePayment({ method: m, needsChange: false, changeFor: '' })}
-            className={`p-5 border text-left transition-all uppercase text-sm font-bold tracking-wider ${payment.method === m ? 'border-white bg-white text-black' : 'border-white/10 text-zinc-400 hover:border-white/40 hover:text-white'}`}
+            key={value}
+            type="button"
+            onClick={() => updatePayment({ method: value, needsChange: false, changeFor: '' })}
+            className={`p-5 border text-left transition-all uppercase text-sm font-bold tracking-wider ${payment.method === value ? 'border-white bg-white text-black' : 'border-white/10 text-zinc-400 hover:border-white/40 hover:text-white'}`}
           >
-            {m}
+            {label}
           </button>
         ))}
       </div>
 
-      {payment.method === 'Dinheiro' && (
+      {payment.method === 'PayOnDelivery' && (
         <div className="mt-6 p-6 border border-white/10 bg-white/5">
           <label className="text-xs uppercase tracking-widest text-zinc-400 mb-4 block font-bold">Precisa de troco?</label>
           <div className="flex gap-4 mb-6">
-            <button onClick={() => updatePayment({needsChange: false, changeFor: ''})} className={`px-6 py-3 border text-sm font-bold uppercase transition-colors ${!payment.needsChange ? 'border-white bg-white text-black' : 'border-white/20 text-zinc-400 hover:text-white'}`}>Não</button>
-            <button onClick={() => updatePayment({needsChange: true})} className={`px-6 py-3 border text-sm font-bold uppercase transition-colors ${payment.needsChange ? 'border-white bg-white text-black' : 'border-white/20 text-zinc-400 hover:text-white'}`}>Sim</button>
+            <button type="button" onClick={() => updatePayment({needsChange: false, changeFor: ''})} className={`px-6 py-3 border text-sm font-bold uppercase transition-colors ${!payment.needsChange ? 'border-white bg-white text-black' : 'border-white/20 text-zinc-400 hover:text-white'}`}>Não</button>
+            <button type="button" onClick={() => updatePayment({needsChange: true})} className={`px-6 py-3 border text-sm font-bold uppercase transition-colors ${payment.needsChange ? 'border-white bg-white text-black' : 'border-white/20 text-zinc-400 hover:text-white'}`}>Sim</button>
           </div>
 
           {payment.needsChange && (

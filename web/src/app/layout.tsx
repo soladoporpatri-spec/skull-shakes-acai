@@ -52,6 +52,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="pt-BR"
       className={`${inter.variable} ${anton.variable} h-full antialiased bg-black text-white`}
     >
+      <head>
+        <meta charSet="utf-8" />
+      </head>
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );

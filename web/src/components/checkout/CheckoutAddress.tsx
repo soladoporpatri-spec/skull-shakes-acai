@@ -120,7 +120,29 @@ export default function CheckoutAddress({ address, updateAddress, errors }: Prop
       <div className="mt-8 border-t border-white/10 pt-16">
         <h3 className="text-xl font-bold uppercase mb-2 text-white">Quem vai receber?</h3>
         <p className="text-zinc-400 mb-8 font-light text-sm">Dados de quem receberá o pedido.</p>
-        <FormInput id="receiverName" label="Nome do Recebedor" error={errors.receiverName} value={address.receiverName} onChange={(v: string) => updateAddress({receiverName: v})} placeholder="Seu nome" autoComplete="name" />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+          <FormInput
+            id="nomeCliente"
+            label="Nome Completo"
+            error={errors.nomeCliente}
+            value={address.nomeCliente}
+            onChange={(v: string) => updateAddress({ nomeCliente: v, receiverName: v })}
+            placeholder="Seu nome completo"
+            autoComplete="name"
+          />
+          <FormInput
+            id="telefone"
+            label="Telefone / WhatsApp"
+            error={errors.telefone}
+            value={address.telefone}
+            onChange={(v: string) => updateAddress({ telefone: v })}
+            placeholder="(62) 99999-9999"
+            autoComplete="tel"
+            inputMode="tel"
+            maxLength={15}
+          />
+        </div>
       </div>
 
     </section>

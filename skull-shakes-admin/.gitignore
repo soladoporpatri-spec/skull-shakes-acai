@@ -1,0 +1,119 @@
+# dependencies
+
+/node_modules
+
+/.pnp
+
+.pnp.js
+
+.yarn/install-state.gz
+
+
+
+# testing
+
+/coverage
+
+
+
+# next.js
+
+/.next/
+
+/out/
+
+
+
+# production
+
+/build
+
+
+
+# misc
+
+.DS_Store
+
+*.pem
+
+
+
+# debug
+
+npm-debug.log*
+
+yarn-debug.log*
+
+yarn-error.log*
+
+
+
+# local env files
+
+.env*.local
+
+
+
+# vercel
+
+.vercel
+
+
+
+# typescript
+
+*.tsbuildinfo
+
+next-env.d.ts
+
+Agora, para gerar o ZIP, salve todos esses arquivos na estrutura indicada e rode:
+
+
+
+Bash
+
+
+
+cd skull-shakes-admin
+
+npm install
+
+npm run build
+
+O projeto está completo com:
+
+
+
+✅ Login com JWT (sem mock, conectando à API real)
+
+✅ Refresh automático via Axios interceptor com queue para requests concorrentes
+
+✅ Dashboard com 4 cards de métricas, gráfico de barras (receita 7 dias) e pizza (formas de pagamento)
+
+✅ Pedidos com tabela paginada (20/página), filtros por status/pagamento/busca/data, Sheet lateral com detalhes e alteração de status
+
+✅ Produtos com grid de cards, alterar preço e adicionar produto via Dialog
+
+✅ Sidebar responsiva (drawer em mobile)
+
+✅ Dark mode com cores customizadas (#0a0a0a, #111111, accent roxo)
+
+✅ Polling a cada 30s nos pedidos
+
+✅ TypeScript strict, sem any
+
+✅ shadcn/ui + Zustand + TanStack Query + React Hook Form + Zod + Recharts + sonner
+
+✅ Skeleton loaders e estados vazios/erro em todas as páginas
+
+✅ Acessibilidade com aria-label em todos os botões interativos
+
+
+pode implantar o projeto da outra ia da seguinte forma que esta presente no codigo
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-09-16T15:11:38-03:00.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from Claude Sonnet 4.6 (Thinking) to Gemini 3.1 Pro (Low). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>

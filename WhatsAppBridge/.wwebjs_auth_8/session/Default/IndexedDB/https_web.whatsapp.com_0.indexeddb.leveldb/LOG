@@ -1,0 +1,41 @@
+2026/09/16-10:07:03.994 1394 Creating DB C:\Meus itens\Criação\Programação\Barbearia-v2\WhatsAppBridge\.wwebjs_auth_8\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb since it was missing.
+2026/09/16-10:07:03.997 1394 Reusing MANIFEST C:\Meus itens\Criação\Programação\Barbearia-v2\WhatsAppBridge\.wwebjs_auth_8\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/09/16-11:20:38.766 3d5c Level-0 table #5: started
+2026/09/16-11:20:38.833 3d5c Level-0 table #5: 1067625 bytes OK
+2026/09/16-11:20:38.836 3d5c Delete type=0 #3
+2026/09/16-12:03:41.514 21d8 Level-0 table #7: started
+2026/09/16-12:03:41.531 21d8 Level-0 table #7: 805978 bytes OK
+2026/09/16-12:03:41.532 21d8 Delete type=0 #4
+2026/09/16-12:06:17.161 3d5c Compacting 1@1 + 1@2 files
+2026/09/16-12:06:17.193 3d5c Generated table #8@1: 9592 keys, 823367 bytes
+2026/09/16-12:06:17.193 3d5c Compacted 1@1 + 1@2 files => 823367 bytes
+2026/09/16-12:06:17.193 3d5c compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/09/16-12:06:17.194 3d5c Delete type=2 #5
+2026/09/16-12:06:17.194 3d5c Delete type=2 #7
+2026/09/16-12:37:59.663 21d8 Level-0 table #10: started
+2026/09/16-12:37:59.677 21d8 Level-0 table #10: 737324 bytes OK
+2026/09/16-12:37:59.678 21d8 Delete type=0 #6
+2026/09/16-12:38:46.099 3d5c Compacting 1@1 + 1@2 files
+2026/09/16-12:38:46.130 3d5c Generated table #11@1: 11482 keys, 1169947 bytes
+2026/09/16-12:38:46.130 3d5c Compacted 1@1 + 1@2 files => 1169947 bytes
+2026/09/16-12:38:46.131 3d5c compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/09/16-12:38:46.131 3d5c Delete type=2 #8
+2026/09/16-12:38:46.131 3d5c Delete type=2 #10
+2026/09/16-13:06:07.933 21d8 Level-0 table #13: started
+2026/09/16-13:06:07.945 21d8 Level-0 table #13: 734222 bytes OK
+2026/09/16-13:06:07.946 21d8 Delete type=0 #9
+2026/09/16-13:06:53.700 3d5c Compacting 1@1 + 1@2 files
+2026/09/16-13:06:53.732 3d5c Generated table #14@1: 13102 keys, 1519359 bytes
+2026/09/16-13:06:53.732 3d5c Compacted 1@1 + 1@2 files => 1519359 bytes
+2026/09/16-13:06:53.732 3d5c compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/09/16-13:06:53.733 3d5c Delete type=2 #11
+2026/09/16-13:06:53.733 3d5c Delete type=2 #13
+2026/09/16-13:30:44.642 21d8 Level-0 table #16: started
+2026/09/16-13:30:44.653 21d8 Level-0 table #16: 696187 bytes OK
+2026/09/16-13:30:44.654 21d8 Delete type=0 #12
+2026/09/16-13:31:30.412 3d5c Compacting 1@1 + 1@2 files
+2026/09/16-13:31:30.444 3d5c Generated table #17@1: 14502 keys, 1852102 bytes
+2026/09/16-13:31:30.444 3d5c Compacted 1@1 + 1@2 files => 1852102 bytes
+2026/09/16-13:31:30.445 3d5c compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/09/16-13:31:30.445 3d5c Delete type=2 #14
+2026/09/16-13:31:30.446 3d5c Delete type=2 #16
