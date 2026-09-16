@@ -61,9 +61,16 @@ builder.Services.AddRateLimiter(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendPolicy", policy =>
-        // TODO: Add production domain before deploying
-        policy.WithOrigins("http://localhost:3000", "http://localhost:3001", "https://skullshakes.com.br")
-              .AllowAnyHeader().AllowAnyMethod());
+        policy.WithOrigins(
+            "http://localhost:3000", 
+            "http://localhost:3001", 
+            "https://skullshakes.com.br",
+            "https://skull-shakes-acai.vercel.app",
+            "https://skull-shakes-admin.vercel.app"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials());
 });
 
 builder.Services.AddEndpointsApiExplorer();
