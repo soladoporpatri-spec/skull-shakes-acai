@@ -69,13 +69,13 @@ export default function Home() {
           image: '/products/bottle-acai.png',
           customizable: true,
           options: [
-            { name: 'Banana', price: 3 },
-            { name: 'Morango', price: 3 },
-            { name: 'Paçoca', price: 3 },
-            { name: 'Ninho', price: 3 },
-            { name: 'Guaraná', price: 3 },
-            { name: 'Nutella', price: 5 }
-          ]
+              { id: 1, name: 'Banana', price: 3 },
+              { id: 2, name: 'Morango', price: 3 },
+              { id: 3, name: 'Paçoca', price: 3 },
+              { id: 4, name: 'Ninho', price: 3 },
+              { id: 5, name: 'Guaraná', price: 3 },
+              { id: 6, name: 'Nutella', price: 5 }
+            ]
         }
       ]
     },

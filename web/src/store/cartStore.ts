@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 export interface CartOption {
+  id: number;
   name: string;
   price: number;
 }

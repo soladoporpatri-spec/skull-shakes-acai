@@ -34,7 +34,6 @@ public static class SeedData
             Console.WriteLine("SUPER ADMIN CREADO COM SUCESSO!");
         }
 
-        // Seed products for frontend demo
         if (!context.Produtos.Any())
         {
             var produtos = new List<Produto>
@@ -51,6 +50,22 @@ public static class SeedData
             context.Produtos.AddRange(produtos);
             context.SaveChanges();
             Console.WriteLine("PRODUTOS DEMO CRIADOS COM SUCESSO!");
+        }
+
+        if (!context.Adicionais.Any())
+        {
+            var adicionais = new List<Adicional>
+            {
+                new Adicional { Nome = "Banana", PrecoBase = 3m, IsDisponivel = true }, // 1
+                new Adicional { Nome = "Morango", PrecoBase = 3m, IsDisponivel = true }, // 2
+                new Adicional { Nome = "Paçoca", PrecoBase = 3m, IsDisponivel = true }, // 3
+                new Adicional { Nome = "Ninho", PrecoBase = 3m, IsDisponivel = true }, // 4
+                new Adicional { Nome = "Guaraná", PrecoBase = 3m, IsDisponivel = true }, // 5
+                new Adicional { Nome = "Nutella", PrecoBase = 5m, IsDisponivel = true } // 6
+            };
+            context.Adicionais.AddRange(adicionais);
+            context.SaveChanges();
+            Console.WriteLine("ADICIONAIS DEMO CRIADOS COM SUCESSO!");
         }
     }
 }

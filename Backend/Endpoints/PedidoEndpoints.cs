@@ -93,7 +93,16 @@ public static class PedidoEndpoints
                 foreach (var adicId in itemReq.AdicionaisIds)
                 {
                     var adic = await db.Adicionais.FindAsync(adicId);
-                    if (adic != null) { itemPedido.Adicionais.Add(adic); itemSubtotal += adic.PrecoBase * itemReq.Quantidade; }
+                    if (adic == null)
+                    {
+                        // Fallback para o Demo
+                        adic = new Adicional { Nome = "Adicional Demo " + adicId, PrecoBase = 3m, IsDisponivel = true };
+                        db.Adicionais.Add(adic);
+                        await db.SaveChangesAsync();
+                    }
+                    
+                    itemPedido.Adicionais.Add(adic);
+                    itemSubtotal += adic.PrecoBase * itemReq.Quantidade;
                 }
 
                 pedido.Itens.Add(itemPedido);

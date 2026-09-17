@@ -118,7 +118,7 @@ export default function CheckoutSection() {
         itens: cartItems.map((item) => ({
           produtoId: parseInt(item.id, 10),
           quantidade: item.quantity,
-          adicionaisIds: [] as number[],
+          adicionaisIds: item.options?.map((o: any) => o.id).filter(Boolean) || [],
         })),
       };
 
