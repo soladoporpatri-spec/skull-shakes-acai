@@ -20,8 +20,18 @@ builder.Services.AddScoped<WhatsAppServico>();
 builder.Services.AddScoped<IDeliveryCalculator, CepPrefixDeliveryCalculator>();
 builder.Services.AddHttpClient<MercadoPagoServico>();
 
+var connString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+    ?? Environment.GetEnvironmentVariable("DATABASE_URL");
+
+if (string.IsNullOrWhiteSpace(connString))
+{
+    Console.WriteLine("CRITICAL ERROR: A variavel de ambiente do Banco de Dados NAO FOI ENCONTRADA pela Render!");
+    throw new Exception("Variavel de Banco de Dados Vazia.");
+}
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connString));
 
 // === JWT AUTHENTICATION ===
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
