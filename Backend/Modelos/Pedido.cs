@@ -25,6 +25,8 @@ public class Pedido
     public int? MotoboyId { get; set; }
     public Motoboy? Motoboy { get; set; }
 
+    public List<PedidoHistorico> Historico { get; set; } = new();
+
     public List<ItemPedido> Itens { get; set; } = new();
 
     // Stored values - locked at order creation time, never recomputed

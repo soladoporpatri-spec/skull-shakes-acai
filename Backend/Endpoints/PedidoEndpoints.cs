@@ -126,7 +126,7 @@ public static class PedidoEndpoints
             if (modalidade == PaymentModality.OnDelivery)
             {
                 pedido.StatusPedido = OrderStatus.Processing;
-                pedido.StatusPagamento = PaymentStatus.Pending;
+                pedido.StatusPagamento = PaymentStatus.Paid; // Approves automatically so it hits the kitchen
                 await db.SaveChangesAsync();
                 
                 await wpServico.EnviarMensagemLojaAsync(

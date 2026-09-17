@@ -77,3 +77,16 @@ export function useUpdatePedidoStatus() {
   });
 
 }
+
+
+export function usePedidoHistorico(id?: number) {
+  return useQuery({
+    queryKey: ["pedidos", id, "historico"],
+    queryFn: async () => {
+      if (!id) return [];
+      const response = await api.get(/admin/pedidos//historico);
+      return response.data as { id: number; mensagem: string; responsavel: string; dataAlteracao: string; statusAnterior?: string; statusNovo?: string }[];
+    },
+    enabled: !!id,
+  });
+}

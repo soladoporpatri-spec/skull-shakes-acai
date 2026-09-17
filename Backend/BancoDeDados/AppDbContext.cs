@@ -16,6 +16,7 @@ public class AppDbContext : DbContext
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<StoreSettings> StoreSettings { get; set; }
     public DbSet<Motoboy> Motoboys { get; set; }
+    public DbSet<PedidoHistorico> PedidosHistorico { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
