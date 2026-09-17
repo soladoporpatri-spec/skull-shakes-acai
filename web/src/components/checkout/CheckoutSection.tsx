@@ -124,6 +124,13 @@ export default function CheckoutSection() {
 
       // Public endpoint - no authentication header required
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5210';
+        
+        if (API_URL.includes("localhost")) {
+            alert("ERRO: O navegador esta tentando enviar para Localhost porque o site na Vercel foi gerado ANTES de voce salvar a variavel de ambiente. Va na Vercel -> Deployments -> Clique no ultimo deploy -> Redeploy.");
+            setStatus('idle');
+            return;
+        }
+
       const response = await fetch(`${API_URL}/pedidos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
