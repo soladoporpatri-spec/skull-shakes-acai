@@ -71,13 +71,11 @@ builder.Services.AddRateLimiter(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendPolicy", policy =>
-        policy.WithOrigins(
-            "http://localhost:3000", 
-            "http://localhost:3001", 
-            "https://skullshakes.com.br",
-            "https://skull-shakes-acai.vercel.app",
-            "https://skull-shakes-admin.vercel.app"
-        )
+        policy.SetIsOriginAllowed(origin => 
+            origin.EndsWith(".vercel.app") || 
+            origin.EndsWith("skullshakes.com.br") || 
+            origin.StartsWith("http://localhost:") ||
+            origin.StartsWith("http://192.168."))
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials());
