@@ -169,14 +169,11 @@ export default function CheckoutSection() {
       // PayOnDelivery or any other method without extra data
       setStatus('success');
       clearCart();
-    } catch (error: unknown) {
+    } catch (error: any) {
       console.error('[checkout]', error);
       setStatus('idle');
-      const msg =
-        error instanceof Error
-          ? error.message
-          : 'Ocorreu um erro inesperado. Tente novamente.';
-      alert(msg);
+      const msg = error instanceof Error ? error.message : 'Ocorreu um erro inesperado.';
+      alert("ALERTA DE DEBUG:\nURL: " + API_URL + "\nERRO: " + msg + "\n\nSe o erro for 'Failed to fetch', DESATIVE O ESCUDO DO BRAVE (leaozinho) ou outro AdBlock. Ele bloqueia pedidos pra APIs externas.");
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, cartItems, clearCart]);
