@@ -10,7 +10,7 @@ namespace SkullShakes.Api.Endpoints;
 
 // Supporting request types
 public record RefreshRequest(string RefreshToken);
-public record StatusUpdateRequest(string Status);
+public record StatusUpdateRequest(string? Status, string? PaymentStatus);
 public record PrecoUpdateRequest(decimal NovoPreco);
 
 public static class AdminEndpoints
@@ -83,12 +83,28 @@ public static class AdminEndpoints
         {
             var pedido = await db.Pedidos.FindAsync(id);
             if (pedido is null) return Results.NotFound();
-            if (!Enum.TryParse<OrderStatus>(request.Status, out var novoStatus)) return Results.BadRequest("Status invalido.");
-            var anterior = pedido.StatusPedido;
-            pedido.StatusPedido = novoStatus;
+            
+            if (!string.IsNullOrWhiteSpace(request.Status))
+            {
+                if (!Enum.TryParse<OrderStatus>(request.Status, out var novoStatus)) return Results.BadRequest("Status invalido.");
+                var anterior = pedido.StatusPedido;
+                pedido.StatusPedido = novoStatus;
+                logger.LogInformation("Admin {Admin} updated Pedido #{Id} from {Old} to {New}", user.Identity?.Name, id, anterior, novoStatus);
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.PaymentStatus))
+            {
+                if (!Enum.TryParse<PaymentStatus>(request.PaymentStatus, out var novoPgto)) return Results.BadRequest("Payment Status invalido.");
+                pedido.StatusPagamento = novoPgto;
+                logger.LogInformation("Admin {Admin} updated Pedido #{Id} Payment to {New}", user.Identity?.Name, id, novoPgto);
+            }
+
             await db.SaveChangesAsync();
-            logger.LogInformation("Admin {Admin} updated Pedido #{Id} from {Old} to {New}", user.Identity?.Name, id, anterior, novoStatus);
-            return Results.Ok(new { pedido.Id, StatusPedido = pedido.StatusPedido.ToString() });
+            return Results.Ok(new { 
+                pedido.Id, 
+                StatusPedido = pedido.StatusPedido.ToString(),
+                StatusPagamento = pedido.StatusPagamento.ToString()
+            });
         });
 
         admin.MapPost("/produtos", async (Produto produto, AppDbContext db) =>

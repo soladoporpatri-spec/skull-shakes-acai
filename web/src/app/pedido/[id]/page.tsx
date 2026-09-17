@@ -11,6 +11,7 @@ interface OrderData {
   statusPedido: string;
   statusPagamento: string;
   formaPagamento: string;
+  modalidadePagamento: string;
   dataCriacao: string;
 }
 
@@ -78,7 +79,7 @@ export default function PedidoTrackingPage({ params }: { params: { id: string } 
   
   let currentStep = 0;
   
-  if (order.statusPagamento === 'Paid' || order.formaPagamento === 'PayOnDelivery') {
+  if (order.statusPagamento === 'Paid' || order.modalidadePagamento === 'OnDelivery') {
     currentStep = 1; // Pagamento aprovado (ou pagar na entrega)
   }
 
@@ -93,8 +94,8 @@ export default function PedidoTrackingPage({ params }: { params: { id: string } 
   }
 
   const steps = [
-    { label: 'Aguardando pagamento', icon: Clock },
-    { label: order.formaPagamento === 'PayOnDelivery' ? 'Pagar na Entrega' : 'Pagamento aprovado', icon: CheckCircle2 },
+    { label: order.modalidadePagamento === 'OnDelivery' ? 'Pagamento na entrega' : 'Aguardando pagamento', icon: Clock },
+    { label: order.modalidadePagamento === 'OnDelivery' ? 'Pedido confirmado' : 'Pagamento aprovado', icon: CheckCircle2 },
     { label: 'Pedido em preparação', icon: Package },
     { label: 'Enviado para entrega', icon: Truck },
     { label: 'Entregue', icon: CheckCircle2 },
@@ -176,7 +177,7 @@ export default function PedidoTrackingPage({ params }: { params: { id: string } 
           <div className="flex justify-between text-zinc-400 text-sm">
             <span>Forma de pagamento</span>
             <span className="text-white uppercase tracking-widest text-xs">
-              {order.formaPagamento === 'Pix' ? 'PIX' : order.formaPagamento === 'PayOnDelivery' ? 'Na Entrega' : 'Cartão'}
+              {order.formaPagamento === 'Pix' ? 'PIX' : order.formaPagamento === 'Cash' ? 'Dinheiro' : 'Cartão'}
             </span>
           </div>
         </div>

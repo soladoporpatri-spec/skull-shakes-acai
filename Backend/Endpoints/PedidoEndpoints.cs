@@ -200,6 +200,7 @@ public static class PedidoEndpoints
                 statusPedido = pedido.StatusPedido.ToString(),
                 statusPagamento = pedido.StatusPagamento.ToString(),
                 formaPagamento = pedido.FormaPagamento.ToString(),
+                modalidadePagamento = pedido.ModalidadePagamento.ToString(),
                 dataCriacao = pedido.DataPedido
             });
         });
