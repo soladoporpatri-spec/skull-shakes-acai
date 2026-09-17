@@ -1,4 +1,4 @@
-import { CheckoutState } from "@/hooks/useCheckout";
+﻿content = '''import { CheckoutState } from "@/hooks/useCheckout";
 
 type Props = {
   payment: CheckoutState["payment"];
@@ -37,7 +37,7 @@ export default function PaymentMethod({ payment, updatePayment, errors }: Props)
             key={value}
             type="button"
             onClick={() => handleMethodSelect(value)}
-            className={`p-5 border text-left transition-all uppercase text-sm font-bold tracking-wider ${payment.method === value ? "border-white bg-white text-black" : "border-white/10 text-zinc-400 hover:border-white/40 hover:text-white"}`}
+            className={ + '' + p-5 border text-left transition-all uppercase text-sm font-bold tracking-wider  + '' + }
           >
             {label}
           </button>
@@ -51,14 +51,14 @@ export default function PaymentMethod({ payment, updatePayment, errors }: Props)
             <button 
               type="button" 
               onClick={() => updatePayment({ modality: "Online" })} 
-              className={`px-6 py-4 border text-sm font-bold uppercase transition-colors flex-1 ${payment.modality === "Online" ? "border-white bg-white text-black" : "border-white/20 text-zinc-400 hover:text-white"}`}
+              className={ + '' + px-6 py-4 border text-sm font-bold uppercase transition-colors flex-1  + '' + }
             >
               Pagar agora no site
             </button>
             <button 
               type="button" 
               onClick={() => updatePayment({ modality: "OnDelivery" })} 
-              className={`px-6 py-4 border text-sm font-bold uppercase transition-colors flex-1 ${payment.modality === "OnDelivery" ? "border-white bg-white text-black" : "border-white/20 text-zinc-400 hover:text-white"}`}
+              className={ + '' + px-6 py-4 border text-sm font-bold uppercase transition-colors flex-1  + '' + }
             >
               Pagar na entrega
             </button>
@@ -70,8 +70,8 @@ export default function PaymentMethod({ payment, updatePayment, errors }: Props)
         <div className="mt-6 p-6 border border-white/10 bg-white/5">
           <label className="text-xs uppercase tracking-widest text-zinc-400 mb-4 block font-bold">Precisa de troco?</label>
           <div className="flex gap-4 mb-6">
-            <button type="button" onClick={() => updatePayment({needsChange: false, changeFor: ""})} className={`px-6 py-3 border text-sm font-bold uppercase transition-colors ${!payment.needsChange ? "border-white bg-white text-black" : "border-white/20 text-zinc-400 hover:text-white"}`}>Não</button>
-            <button type="button" onClick={() => updatePayment({needsChange: true})} className={`px-6 py-3 border text-sm font-bold uppercase transition-colors ${payment.needsChange ? "border-white bg-white text-black" : "border-white/20 text-zinc-400 hover:text-white"}`}>Sim</button>
+            <button type="button" onClick={() => updatePayment({needsChange: false, changeFor: ""})} className={ + '' + px-6 py-3 border text-sm font-bold uppercase transition-colors  + '' + }>Não</button>
+            <button type="button" onClick={() => updatePayment({needsChange: true})} className={ + '' + px-6 py-3 border text-sm font-bold uppercase transition-colors  + '' + }>Sim</button>
           </div>
 
           {payment.needsChange && (
@@ -87,7 +87,7 @@ export default function PaymentMethod({ payment, updatePayment, errors }: Props)
                 value={payment.changeFor}
                 onChange={(e) => updatePayment({ changeFor: e.target.value })}
                 placeholder="Ex: 50"
-                className={`bg-transparent border-b ${errors.changeFor ? "border-red-500" : "border-white/20 focus:border-white"} outline-none py-3 px-2 text-white placeholder:text-zinc-700 transition-colors rounded-none w-full max-w-xs focus:bg-white/5`}
+                className={ + '' + g-transparent border-b  outline-none py-3 px-2 text-white placeholder:text-zinc-700 transition-colors rounded-none w-full max-w-xs focus:bg-white/5 + '' + }
               />
             </div>
           )}
@@ -96,3 +96,7 @@ export default function PaymentMethod({ payment, updatePayment, errors }: Props)
     </section>
   );
 }
+'''
+
+with open('web/src/components/checkout/PaymentMethod.tsx', 'w', encoding='utf-8') as f:
+    f.write(content)

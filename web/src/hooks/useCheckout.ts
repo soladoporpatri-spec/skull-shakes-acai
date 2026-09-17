@@ -42,7 +42,7 @@ export function useCheckout() {
       deliveryFee: null,
       distance: null,
     },
-    payment: { method: '', needsChange: false, changeFor: '' },
+    payment: { method: 'Pix', modality: 'Online', needsChange: false, changeFor: '' },
     notes: ''
   });
   const updateAddress = (fields: Partial<CheckoutState['address']>) => setState(s => ({ ...s, address: { ...s.address, ...fields } }));
