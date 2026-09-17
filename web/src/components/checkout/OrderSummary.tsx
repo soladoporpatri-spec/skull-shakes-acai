@@ -6,9 +6,10 @@ type Props = {
   isSubmitting: boolean;
   status: 'idle' | 'submitting' | 'success' | 'pix_pending';
   deliveryFee: number | null;
+  isAberta?: boolean;
 };
 
-export default function OrderSummary({ onSubmit, isSubmitting, status, deliveryFee }: Props) {
+export default function OrderSummary({ onSubmit, isSubmitting, status, deliveryFee, isAberta = true }: Props) {
   const { items } = useCartStore();
   const subtotal = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   

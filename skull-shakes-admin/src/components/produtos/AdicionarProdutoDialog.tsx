@@ -2,7 +2,9 @@
 
 
 
-import React from "react";
+import React, { useState, useRef } from "react";
+import { toast } from "sonner";
+import api from "@/lib/api";
 
 import { useForm } from "react-hook-form";
 
@@ -50,7 +52,7 @@ const schema = z.object({
 
     .positive("O preço deve ser maior que zero"),
 
-  urlImagem: z.string().url("URL inválida").or(z.literal("")),
+  urlImagem: z.string().optional(),
 
   disponivel: z.boolean(),
 

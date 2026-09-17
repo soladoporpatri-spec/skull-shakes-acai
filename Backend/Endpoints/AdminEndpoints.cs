@@ -11,6 +11,7 @@ namespace SkullShakes.Api.Endpoints;
 // Supporting request types
 public record RefreshRequest(string RefreshToken);
 public record StatusUpdateRequest(string? Status, string? PaymentStatus);
+public record StoreStatusRequest(bool IsAberta);
 public record PrecoUpdateRequest(decimal NovoPreco);
 
 public static class AdminEndpoints
@@ -106,6 +107,66 @@ public static class AdminEndpoints
                 StatusPagamento = pedido.StatusPagamento.ToString()
             });
         });
+
+        admin.MapPut("/configuracoes/status", async (StoreStatusRequest req, AppDbContext db) =>
+        {
+            var config = await db.StoreSettings.FindAsync(1);
+            if (config == null)
+            {
+                config = new StoreSettings { Id = 1, IsAberta = req.IsAberta };
+                db.StoreSettings.Add(config);
+            }
+            else
+            {
+                config.IsAberta = req.IsAberta;
+            }
+            await db.SaveChangesAsync();
+            return Results.Ok(new { isAberta = config.IsAberta });
+        });
+        
+        
+        admin.MapPost("/produtos/upload", async (HttpRequest req, IConfiguration config, ILogger<Program> logger) =>
+        {
+            if (!req.HasFormContentType) return Results.BadRequest("Invalid content type");
+            
+            var form = await req.ReadFormAsync();
+            var file = form.Files.FirstOrDefault();
+            if (file == null || file.Length == 0) return Results.BadRequest("No file uploaded");
+
+            if (!file.ContentType.StartsWith("image/")) return Results.BadRequest("Only images allowed");
+
+            var supabaseUrl = config["SUPABASE_URL"];
+            var supabaseKey = config["SUPABASE_SERVICE_ROLE_KEY"] ?? config["SUPABASE_KEY"];
+
+            if (string.IsNullOrEmpty(supabaseUrl) || string.IsNullOrEmpty(supabaseKey))
+            {
+                logger.LogError("Supabase URL or Key not configured");
+                return Results.StatusCode(500);
+            }
+
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+            var requestUrl = $"{supabaseUrl}/storage/v1/object/produtos/{fileName}";
+            
+            using var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {supabaseKey}");
+            httpClient.DefaultRequestHeaders.Add("apikey", supabaseKey);
+
+            using var stream = file.OpenReadStream();
+            using var streamContent = new StreamContent(stream);
+            streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+
+            var response = await httpClient.PostAsync(requestUrl, streamContent);
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                logger.LogError("Supabase Upload Error: {StatusCode} - {Body}", response.StatusCode, responseBody);
+                return Results.StatusCode(502);
+            }
+
+            var publicUrl = $"{supabaseUrl}/storage/v1/object/public/produtos/{fileName}";
+            return Results.Ok(new { url = publicUrl });
+        }).DisableAntiforgery();
 
         admin.MapPost("/produtos", async (Produto produto, AppDbContext db) =>
         {

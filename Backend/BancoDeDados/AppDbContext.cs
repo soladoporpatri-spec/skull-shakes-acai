@@ -14,9 +14,11 @@ public class AppDbContext : DbContext
     public DbSet<ItemPedido> ItensPedido { get; set; }
     public DbSet<AdminUser> AdminUsers { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<StoreSettings> StoreSettings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<StoreSettings>().HasData(new StoreSettings { Id = 1, IsAberta = true });
         // Store enums as strings for readability in the DB
         modelBuilder.Entity<Pedido>()
             .Property(p => p.StatusPedido)

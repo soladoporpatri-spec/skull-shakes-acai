@@ -9,6 +9,9 @@ import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Store } from "lucide-react";
+import { useStoreStatus, useUpdateStoreStatus } from "@/hooks/useStoreStatus";
+import { OrderNotifier } from "@/components/pedidos/OrderNotifier";
 
 
 
@@ -37,6 +40,14 @@ export default function Header({ onMenuClick }: HeaderProps) {
   const pathname = usePathname();
 
   const title = pageTitles[pathname] || "Dashboard";
+  const { data: status, isLoading } = useStoreStatus();
+  const updateStatus = useUpdateStoreStatus();
+  
+  const handleToggle = () => {
+    if (status) {
+      updateStatus.mutate(!status.isAberta);
+    }
+  };
 
 
 
