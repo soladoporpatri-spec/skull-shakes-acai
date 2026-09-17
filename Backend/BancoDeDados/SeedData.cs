@@ -4,6 +4,7 @@ using SkullShakes.Api.Modelos;
 using System.Linq;
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 namespace SkullShakes.Api.BancoDeDados;
 
@@ -14,8 +15,8 @@ public static class SeedData
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         
-        // Garante que o banco e as tabelas sejam criados se nÃ£o existirem
-        context.Database.EnsureCreated();
+        // Garante que as tabelas sejam criadas rodando as Migrations (compativel com Supabase)
+        context.Database.Migrate();
         
         if (!context.AdminUsers.Any())
         {
