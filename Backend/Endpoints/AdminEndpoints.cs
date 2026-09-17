@@ -13,6 +13,23 @@ public record RefreshRequest(string RefreshToken);
 public record StatusUpdateRequest(string? Status, string? PaymentStatus);
 public record StoreStatusRequest(bool IsAberta);
 public record PrecoUpdateRequest(decimal NovoPreco);
+public class StoreSettingsRequest
+{
+    public bool UseAutoSchedule { get; set; }
+    public string ScheduleJson { get; set; } = "{}";
+}
+
+public class MotoboyRequest
+{
+    public string Nome { get; set; } = string.Empty;
+    public string Telefone { get; set; } = string.Empty;
+}
+
+public class PedidoMotoboyRequest
+{
+    public int? MotoboyId { get; set; }
+}
+
 
 public static class AdminEndpoints
 {
@@ -131,6 +148,31 @@ public static class AdminEndpoints
         });
         
         
+                admin.MapGet("/configuracoes", async (AppDbContext db) =>
+        {
+            var config = await db.StoreSettings.FindAsync(1);
+            if (config == null)
+            {
+                config = new StoreSettings { Id = 1, IsAberta = true, UseAutoSchedule = false, ScheduleJson = "{}" };
+                db.StoreSettings.Add(config);
+                await db.SaveChangesAsync();
+            }
+            return Results.Ok(new { config.IsAberta, config.UseAutoSchedule, config.ScheduleJson });
+        });
+
+        admin.MapPut("/configuracoes", async (StoreSettingsRequest req, AppDbContext db, ClaimsPrincipal user, ILogger<Program> logger) =>
+        {
+            var config = await db.StoreSettings.FindAsync(1);
+            if (config == null) return Results.NotFound();
+
+            config.UseAutoSchedule = req.UseAutoSchedule;
+            config.ScheduleJson = req.ScheduleJson;
+            await db.SaveChangesAsync();
+
+            logger.LogInformation("Admin {Admin} updated store schedule settings", user.Identity?.Name);
+            return Results.Ok(config);
+        });
+
         admin.MapPost("/produtos/upload", async (HttpRequest req, IConfiguration config, ILogger<Program> logger) =>
         {
             if (!req.HasFormContentType) return Results.BadRequest("Invalid content type");
@@ -192,6 +234,87 @@ public static class AdminEndpoints
             await db.SaveChangesAsync();
             logger.LogInformation("Admin {Admin} updated Produto #{Id} price {Old}->{New}", user.Identity?.Name, id, anterior, request.NovoPreco);
             return Results.Ok(produto);
+        });
+
+                // --- MOTOBOYS ---
+        admin.MapGet("/motoboys", async (AppDbContext db) =>
+        {
+            var motoboys = await db.Motoboys.OrderBy(m => m.Nome).ToListAsync();
+            return Results.Ok(motoboys);
+        });
+
+        admin.MapPost("/motoboys", async (MotoboyRequest req, AppDbContext db, ClaimsPrincipal user) =>
+        {
+            var m = new Motoboy { Nome = req.Nome, Telefone = req.Telefone, Ativo = true };
+            db.Motoboys.Add(m);
+            await db.SaveChangesAsync();
+            return Results.Ok(m);
+        });
+
+        admin.MapPut("/pedidos/{id}/motoboy", async (int id, PedidoMotoboyRequest req, AppDbContext db, ClaimsPrincipal user) =>
+        {
+            var pedido = await db.Pedidos.FindAsync(id);
+            if (pedido == null) return Results.NotFound();
+            pedido.MotoboyId = req.MotoboyId;
+            await db.SaveChangesAsync();
+            return Results.Ok(pedido);
+        });
+
+        // --- FECHAMENTO ---
+        admin.MapGet("/relatorios/fechamento", async (string date, AppDbContext db) =>
+        {
+            if (!DateTime.TryParse(date, out var parsedDate)) return Results.BadRequest("Data invalida");
+            
+            var start = parsedDate.Date;
+            var end = start.AddDays(1);
+
+            var pedidos = await db.Pedidos
+                .Include(p => p.Motoboy)
+                .Where(p => p.DataPedido >= start && p.DataPedido < end && p.StatusPedido != OrderStatus.Canceled)
+                .ToListAsync();
+
+            var motoboysStats = pedidos
+                .Where(p => p.MotoboyId != null)
+                .GroupBy(p => p.MotoboyId)
+                .Select(g => new
+                {
+                    MotoboyId = g.Key,
+                    MotoboyNome = g.First().Motoboy?.Nome ?? "Desconhecido",
+                    TotalEntregas = g.Count(),
+                    TotalTaxas = g.Sum(p => p.DeliveryFee),
+                    TotalDinheiroRecebido = g.Where(p => p.FormaPagamento == PaymentMethod.Cash).Sum(p => p.Total)
+                }).ToList();
+
+            var lojaStats = new {
+                TotalPedidos = pedidos.Count,
+                ReceitaBruta = pedidos.Sum(p => p.Total),
+                Pix = pedidos.Where(p => p.FormaPagamento == PaymentMethod.Pix).Sum(p => p.Total),
+                Cartao = pedidos.Where(p => p.FormaPagamento == PaymentMethod.CreditCard || p.FormaPagamento == PaymentMethod.DebitCard).Sum(p => p.Total),
+                Dinheiro = pedidos.Where(p => p.FormaPagamento == PaymentMethod.Cash).Sum(p => p.Total)
+            };
+
+            return Results.Ok(new { Loja = lojaStats, Motoboys = motoboysStats });
+        });
+
+        // --- GESTAO DE ESTOQUE (ADICIONAIS) ---
+        admin.MapGet("/adicionais", async (AppDbContext db) =>
+        {
+            var adicionais = await db.Adicionais.OrderBy(a => a.Nome).ToListAsync();
+            return Results.Ok(adicionais);
+        });
+
+        admin.MapPut("/adicionais/{id}/toggle", async (int id, AppDbContext db, ClaimsPrincipal user, ILogger<Program> logger) =>
+        {
+            var adic = await db.Adicionais.FindAsync(id);
+            if (adic == null) return Results.NotFound();
+
+            adic.Disponivel = !adic.Disponivel;
+            adic.IsDisponivel = adic.Disponivel; // Keep both synced just in case
+
+            await db.SaveChangesAsync();
+            logger.LogInformation("Admin {Admin} toggled Adicional #{Id} to {Status}", user.Identity?.Name, id, adic.Disponivel);
+            
+            return Results.Ok(adic);
         });
     }
 }

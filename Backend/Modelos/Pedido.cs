@@ -22,6 +22,9 @@ public class Pedido
     public string? PagamentoExternoId { get; set; } // ID from Mercado Pago
     public string? IdempotencyKey { get; set; } // To prevent duplicate charges
 
+    public int? MotoboyId { get; set; }
+    public Motoboy? Motoboy { get; set; }
+
     public List<ItemPedido> Itens { get; set; } = new();
 
     // Stored values - locked at order creation time, never recomputed

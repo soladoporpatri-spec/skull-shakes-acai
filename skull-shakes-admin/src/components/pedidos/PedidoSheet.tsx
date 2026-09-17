@@ -46,6 +46,7 @@ import { useUpdatePedidoStatus } from "@/hooks/usePedidos";
 
 import { MapPin, Phone, User, Calendar, CreditCard } from "lucide-react";
 import { Printer } from "lucide-react";
+import { useMotoboys, useUpdatePedidoMotoboy } from "@/hooks/useMotoboys";
 
 
 
@@ -85,6 +86,9 @@ export default function PedidoSheet({ pedido, open, onOpenChange }: PedidoSheetP
 
   const [newStatus, setNewStatus] = useState<OrderStatus | "">("");
   const [newPaymentStatus, setNewPaymentStatus] = useState<"Pending" | "Paid" | "Failed" | "Refunded" | "">("");
+  const { data: motoboys } = useMotoboys();
+  const updateMotoboy = useUpdatePedidoMotoboy();
+
 
   const updateStatus = useUpdatePedidoStatus();
 
