@@ -173,7 +173,7 @@ export default function CheckoutSection() {
       console.error('[checkout]', error);
       setStatus('idle');
       const msg = error instanceof Error ? error.message : 'Ocorreu um erro inesperado.';
-      alert("ALERTA DE DEBUG:\nURL: " + API_URL + "\nERRO: " + msg + "\n\nSe o erro for 'Failed to fetch', DESATIVE O ESCUDO DO BRAVE (leaozinho) ou outro AdBlock. Ele bloqueia pedidos pra APIs externas.");
+      const fallbackUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5210"; alert("ALERTA DE DEBUG:\nURL: " + fallbackUrl + "\nERRO: " + msg + "\n\nSe o erro for 'Failed to fetch', DESATIVE O ESCUDO DO BRAVE (leaozinho) ou outro AdBlock. Ele bloqueia pedidos pra APIs externas.");
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, cartItems, clearCart]);
