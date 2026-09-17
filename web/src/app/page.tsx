@@ -346,7 +346,7 @@ export default function Home() {
       <CheckoutSection />
 
       {/* Footer Section */}
-      <footer className="w-full bg-black border-t border-white/10 py-12 px-6">
+      <footer className="w-full bg-black border-t border-white/10 py-12 px-6 relative z-10">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start">
             <h2 className="text-xl font-display font-black tracking-widest uppercase">
