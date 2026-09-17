@@ -20,7 +20,7 @@ export default function Home() {
   // Hero Carousel State
   const featuredProducts = [
     {
-      id: 'ss-trad-1',
+      id: '1',
       shortName: 'TRADICIONAL',
       label: 'AÇAÍ',
       desc: 'Açaí puro expresso incrivelmente cremoso.',
@@ -58,10 +58,10 @@ export default function Home() {
       category: "Açaís",
       subtitle: "Açaí cremoso na garrafa de 500 ml.",
       items: [
-        { id: 'ss-trad-1', name: 'SS Tradicional', desc: 'Açaí puro expresso.', price: 20, flavorType: 'acai', image: '/products/bottle-acai.png' },
-        { id: 'ss-trad-2', name: 'SS com Leite em Pó', desc: 'Açaí, leite em pó e leite condensado.', price: 20, flavorType: 'acai', image: '/products/bottle-acai.png' },
+        { id: '1', name: 'SS Tradicional', desc: 'Açaí puro expresso.', price: 20, flavorType: 'acai', image: '/products/bottle-acai.png' },
+        { id: '2', name: 'SS com Leite em Pó', desc: 'Açaí, leite em pó e leite condensado.', price: 20, flavorType: 'acai', image: '/products/bottle-acai.png' },
         { 
-          id: 'ss-trad-custom', 
+          id: '3', 
           name: 'Monte o seu SS', 
           desc: 'Açaí puro. Escolha seus adicionais.', 
           price: 20, 
@@ -83,11 +83,11 @@ export default function Home() {
       category: "Linha Nutella",
       subtitle: "Pra quem não abre mão de muita Nutella.",
       items: [
-        { id: 'ss-trad-nutella', name: 'SS Tradicional com Nutella', desc: 'Açaí, leite Ninho, leite condensado e Nutella.', price: 25, flavorType: 'acai', image: '/products/bottle-acai.png' },
-        { id: 'ss-pacoca-nutella', name: 'SS Paçoca com Nutella', desc: 'Açaí, creme de paçoca especial e Nutella.', price: 28, flavorType: 'acai', image: '/products/bottle-acai.png' },
-        { id: 'ss-limao-nutella', name: 'SS Limão com Nutella', desc: 'Batidinha gourmet de limão especial e Nutella.', price: 28, flavorType: 'passion', image: '/products/bottle-maracuja.png' },
-        { id: 'ss-morango-nutella', name: 'SS Morango com Nutella', desc: 'Batidinha gourmet de morango especial e muita Nutella.', price: 28, flavorType: 'strawberry', image: '/products/bottle-morango.png' },
-        { id: 'ss-maracuja-nutella', name: 'SS Maracujá com Nutella', desc: 'Batidinha gourmet de maracujá especial e muita Nutella.', price: 28, flavorType: 'passion', image: '/products/bottle-maracuja.png' },
+        { id: '4', name: 'SS Tradicional com Nutella', desc: 'Açaí, leite Ninho, leite condensado e Nutella.', price: 25, flavorType: 'acai', image: '/products/bottle-acai.png' },
+        { id: '5', name: 'SS Paçoca com Nutella', desc: 'Açaí, creme de paçoca especial e Nutella.', price: 28, flavorType: 'acai', image: '/products/bottle-acai.png' },
+        { id: '6', name: 'SS Limão com Nutella', desc: 'Batidinha gourmet de limão especial e Nutella.', price: 28, flavorType: 'passion', image: '/products/bottle-maracuja.png' },
+        { id: '7', name: 'SS Morango com Nutella', desc: 'Batidinha gourmet de morango especial e muita Nutella.', price: 28, flavorType: 'strawberry', image: '/products/bottle-morango.png' },
+        { id: '8', name: 'SS Maracujá com Nutella', desc: 'Batidinha gourmet de maracujá especial e muita Nutella.', price: 28, flavorType: 'passion', image: '/products/bottle-maracuja.png' },
       ]
     },
     {
