@@ -63,3 +63,55 @@
   }
 
 }
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  /* Make the Sheet Content visible */
+  [role="dialog"], [role="dialog"] * {
+    visibility: visible;
+  }
+  
+  [role="dialog"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm !important; /* Standard thermal printer width */
+    max-width: 80mm !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Hide specific elements within the modal that we don't want printed */
+  [role="dialog"] .print\:hidden,
+  [role="dialog"] select,
+  [role="dialog"] button {
+    display: none !important;
+  }
+
+  /* Adjust typography for 80mm print */
+  [role="dialog"] p, [role="dialog"] span, [role="dialog"] div {
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    color: #000 !important; /* Force black text */
+  }
+  
+  [role="dialog"] h3 {
+    font-size: 14px !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin-top: 10px !important;
+    margin-bottom: 5px !important;
+  }
+
+  /* Remove backgrounds */
+  [role="dialog"] .bg-muted\/50, [role="dialog"] .bg-secondary {
+    background-color: transparent !important;
+    border-bottom: 1px dashed #000 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}

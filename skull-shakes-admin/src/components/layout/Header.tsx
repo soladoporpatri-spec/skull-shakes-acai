@@ -85,6 +85,19 @@ export default function Header({ onMenuClick }: HeaderProps) {
 
       </div>
 
+      <div className="ml-auto flex items-center gap-4">
+        {!isLoading && status && (
+          <Button
+            variant={status.isAberta ? "default" : "destructive"}
+            size="sm"
+            onClick={handleToggle}
+            className={status.isAberta ? "bg-green-600 hover:bg-green-700 text-white" : ""}
+          >
+            <Store className="h-4 w-4 mr-2" />
+            {status.isAberta ? "Loja Aberta" : "Loja Fechada"}
+          </Button>
+        )}
+      </div>
     </header>
 
   );

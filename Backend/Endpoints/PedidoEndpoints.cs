@@ -96,7 +96,7 @@ public static class PedidoEndpoints
                     if (adic == null)
                     {
                         // Fallback para o Demo
-                        adic = new Adicional { Nome = "Adicional Demo " + adicId, PrecoBase = 3m, IsDisponivel = true };
+                        adic = new Adicional { Nome = "Adicional Demo " + adicId, PrecoBase = 3m, Disponivel = true };
                         db.Adicionais.Add(adic);
                         await db.SaveChangesAsync();
                     }
@@ -189,6 +189,12 @@ public static class PedidoEndpoints
                 default:
                     return Results.BadRequest("Método de pagamento não suportado para pagamento online.");
             }
+        });
+
+        app.MapGet("/pedidos/configuracoes/status", async (AppDbContext db) =>
+        {
+            var config = await db.StoreSettings.FindAsync(1);
+            return Results.Ok(new { isAberta = config?.IsAberta ?? true });
         });
 
         // --- NEW: PUBLIC ORDER TRACKING ENDPOINT ---

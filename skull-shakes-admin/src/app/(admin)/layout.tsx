@@ -7,6 +7,8 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { useAuthStore } from "@/store/authStore";
+import { usePedidos } from "@/hooks/usePedidos";
+import { useOrderNotification } from "@/hooks/useOrderNotification";
 
 import Sidebar from "@/components/layout/Sidebar";
 
@@ -47,6 +49,9 @@ export default function AdminLayout({
   }, [hydrated, isAuthenticated, router]);
 
 
+
+  const { data: pedidos } = usePedidos();
+  useOrderNotification(pedidos);
 
   if (!hydrated) {
 

@@ -190,7 +190,7 @@ export default function DashboardPage() {
 
           loading={isLoading}
 
-          description="Pedidos pagos"
+          description="Pedidos pagos e a pagar"
 
         />
 

@@ -1,4 +1,4 @@
-namespace SkullShakes.Api.Modelos;
+﻿namespace SkullShakes.Api.Modelos;
 
 public class Adicional
 {
@@ -6,5 +6,6 @@ public class Adicional
     public string Nome { get; set; } = string.Empty;
     public decimal PrecoBase { get; set; }
     public bool Disponivel { get; set; } = true;
+    public bool IsDisponivel { get; set; } = true;
     public string Categoria { get; set; } = string.Empty;
 }

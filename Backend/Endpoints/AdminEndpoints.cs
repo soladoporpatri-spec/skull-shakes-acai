@@ -66,6 +66,7 @@ public static class AdminEndpoints
         {
             var pedidos = await db.Pedidos
                 .Include(p => p.Itens).ThenInclude(i => i.Produto)
+                .Include(p => p.Itens).ThenInclude(i => i.Adicionais)
                 .OrderByDescending(p => p.DataPedido)
                 .Select(p => new
                 {
@@ -74,7 +75,12 @@ public static class AdminEndpoints
                     StatusPagamento = p.StatusPagamento.ToString(),
                     FormaPagamento = p.FormaPagamento.ToString(),
                     p.Subtotal, p.DeliveryFee, p.Total, p.PagamentoExternoId,
-                    Itens = p.Itens.Select(i => new { i.Quantidade, i.PrecoUnitario, Produto = i.Produto != null ? i.Produto.Nome : "N/A" })
+                    Itens = p.Itens.Select(i => new { 
+                        i.Quantidade, 
+                        i.PrecoUnitario, 
+                        Produto = i.Produto != null ? i.Produto.Nome : "N/A",
+                        Adicionais = i.Adicionais.Select(a => a.Nome).ToList()
+                    })
                 }).ToListAsync();
             return Results.Ok(pedidos);
         });

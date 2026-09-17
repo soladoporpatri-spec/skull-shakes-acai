@@ -45,6 +45,7 @@ import { formatCurrency, formatDate, paymentMethodLabels, orderStatusLabels } fr
 import { useUpdatePedidoStatus } from "@/hooks/usePedidos";
 
 import { MapPin, Phone, User, Calendar, CreditCard } from "lucide-react";
+import { Printer } from "lucide-react";
 
 
 
@@ -83,10 +84,15 @@ interface PedidoSheetProps {
 export default function PedidoSheet({ pedido, open, onOpenChange }: PedidoSheetProps) {
 
   const [newStatus, setNewStatus] = useState<OrderStatus | "">("");
+  const [newPaymentStatus, setNewPaymentStatus] = useState<"Pending" | "Paid" | "Failed" | "Refunded" | "">("");
 
   const updateStatus = useUpdatePedidoStatus();
 
 
+
+  const handlePrint = () => {
+    window.print();
+  };
 
   if (!pedido) return null;
 
@@ -122,12 +128,19 @@ export default function PedidoSheet({ pedido, open, onOpenChange }: PedidoSheetP
 
       <SheetContent side="right" className="overflow-y-auto">
 
-        <SheetHeader>
-
-          <SheetTitle>Pedido #{pedido.id}</SheetTitle>
-
-          <SheetDescription>Detalhes do pedido</SheetDescription>
-
+                <SheetHeader>
+          <div className="flex justify-between items-start">
+            <div>
+              <SheetTitle className="text-xl">Pedido #{pedido.id}</SheetTitle>
+              <SheetDescription>
+                {formatDate(pedido.dataPedido)}
+              </SheetDescription>
+            </div>
+            <Button variant="outline" size="sm" onClick={handlePrint} className="print:hidden">
+              <Printer className="h-4 w-4 mr-2" />
+              Imprimir
+            </Button>
+          </div>
         </SheetHeader>
 
 

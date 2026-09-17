@@ -25,6 +25,7 @@ const COLORS: Record<PaymentMethod, string> = {
   DebitCard: "#f59e0b",
 
   PayOnDelivery: "#ef4444",
+  Cash: "#10b981",
 
 };
 
@@ -186,11 +187,7 @@ export default function PagamentosPieChart({
 
             />
 
-            <Legend
-
-              wrapperStyle={{ color: "#a1a1aa", fontSize: "12px" }}
-
-            />
+            <Legend wrapperStyle={{ fontSize: "12px" }} formatter={(value) => <span style={{ color: "#a1a1aa" }}>{value}</span>} />
 
           </PieChart>
 

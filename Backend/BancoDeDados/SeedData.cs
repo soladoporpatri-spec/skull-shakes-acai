@@ -56,12 +56,12 @@ public static class SeedData
         {
             var adicionais = new List<Adicional>
             {
-                new Adicional { Nome = "Banana", PrecoBase = 3m, IsDisponivel = true }, // 1
-                new Adicional { Nome = "Morango", PrecoBase = 3m, IsDisponivel = true }, // 2
-                new Adicional { Nome = "Paçoca", PrecoBase = 3m, IsDisponivel = true }, // 3
-                new Adicional { Nome = "Ninho", PrecoBase = 3m, IsDisponivel = true }, // 4
-                new Adicional { Nome = "Guaraná", PrecoBase = 3m, IsDisponivel = true }, // 5
-                new Adicional { Nome = "Nutella", PrecoBase = 5m, IsDisponivel = true } // 6
+                new Adicional { Nome = "Banana", PrecoBase = 3m, Disponivel = true }, // 1
+                new Adicional { Nome = "Morango", PrecoBase = 3m, Disponivel = true }, // 2
+                new Adicional { Nome = "Paçoca", PrecoBase = 3m, Disponivel = true }, // 3
+                new Adicional { Nome = "Ninho", PrecoBase = 3m, Disponivel = true }, // 4
+                new Adicional { Nome = "Guaraná", PrecoBase = 3m, Disponivel = true }, // 5
+                new Adicional { Nome = "Nutella", PrecoBase = 5m, Disponivel = true } // 6
             };
             context.Adicionais.AddRange(adicionais);
             context.SaveChanges();
