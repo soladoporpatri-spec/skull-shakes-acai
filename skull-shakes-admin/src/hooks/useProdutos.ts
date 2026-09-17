@@ -20,7 +20,7 @@ export function useProdutos() {
 
     queryFn: async () => {
 
-      const response = await api.get<Produto[]>("/cardapio");
+      const response = await api.get<Produto[]>("/admin/produtos");
 
       return response.data;
 

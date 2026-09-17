@@ -173,6 +173,12 @@ public static class AdminEndpoints
             return Results.Ok(config);
         });
 
+                admin.MapGet("/produtos", async (AppDbContext db) =>
+        {
+            var produtos = await db.Produtos.OrderBy(p => p.Nome).ToListAsync();
+            return Results.Ok(produtos);
+        });
+
         admin.MapPost("/produtos/upload", async (HttpRequest req, IConfiguration config, ILogger<Program> logger) =>
         {
             if (!req.HasFormContentType) return Results.BadRequest("Invalid content type");
