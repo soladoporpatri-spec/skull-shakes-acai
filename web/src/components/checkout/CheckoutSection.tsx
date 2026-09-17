@@ -165,7 +165,7 @@ export default function CheckoutSection() {
       console.error('[checkout]', error);
       setStatus('idle');
       const msg = error instanceof Error ? error.message : 'Ocorreu um erro inesperado.';
-      alert("Houve uma falha na comunicação. Verifique sua conexão e tente novamente.");
+      alert(msg);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, cartItems, clearCart]);
