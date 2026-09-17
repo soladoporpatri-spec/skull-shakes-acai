@@ -122,16 +122,8 @@ export default function CheckoutSection() {
         })),
       };
 
-      // Public endpoint - no authentication header required
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5210';
-        
-        if (API_URL.includes("localhost")) {
-            alert("ERRO: O navegador esta tentando enviar para Localhost porque o site na Vercel foi gerado ANTES de voce salvar a variavel de ambiente. Va na Vercel -> Deployments -> Clique no ultimo deploy -> Redeploy.");
-            setStatus('idle');
-            return;
-        }
-
-      const response = await fetch(`${API_URL}/pedidos`, {
+        // Usando a rota de Proxy para contornar Adblock/Antivirus/Brave Shields
+        const response = await fetch('/api/pedidos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -173,7 +165,7 @@ export default function CheckoutSection() {
       console.error('[checkout]', error);
       setStatus('idle');
       const msg = error instanceof Error ? error.message : 'Ocorreu um erro inesperado.';
-      const fallbackUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5210"; alert("ALERTA DE DEBUG:\nURL: " + fallbackUrl + "\nERRO: " + msg + "\n\nSe o erro for 'Failed to fetch', DESATIVE O ESCUDO DO BRAVE (leaozinho) ou outro AdBlock. Ele bloqueia pedidos pra APIs externas.");
+      alert("Houve uma falha na comunicação. Verifique sua conexão e tente novamente.");
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, cartItems, clearCart]);
