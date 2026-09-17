@@ -1,4 +1,7 @@
-import { CheckoutState } from '@/hooks/useCheckout';
+﻿# -*- coding: utf-8 -*-
+import re
+
+content = '''import { CheckoutState } from '@/hooks/useCheckout';
 
 type Props = {
   payment: CheckoutState['payment'];
@@ -96,3 +99,6 @@ export default function PaymentMethod({ payment, updatePayment, errors }: Props)
     </section>
   );
 }
+'''
+with open('web/src/components/checkout/PaymentMethod.tsx', 'w', encoding='utf-8') as f:
+    f.write(content)

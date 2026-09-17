@@ -44,6 +44,12 @@ public static class PedidoEndpoints
 
             if (!Enum.TryParse<PaymentMethod>(request.FormaPagamento, out var formaPagamento))
                 return Results.BadRequest($"Forma de pagamento invalida: {request.FormaPagamento}");
+            
+            if (!Enum.TryParse<PaymentModality>(request.ModalidadePagamento, out var modalidade))
+                modalidade = PaymentModality.Online;
+            
+            if (formaPagamento == PaymentMethod.Cash && modalidade == PaymentModality.Online)
+                return Results.BadRequest("Dinheiro so pode ser pago na entrega.");
 
             foreach (var item in request.Itens)
                 if (item.Quantidade <= 0 || item.Quantidade > 50)
@@ -58,6 +64,7 @@ public static class PedidoEndpoints
                 Endereco = request.Endereco.Trim()[..Math.Min(request.Endereco.Trim().Length, 300)],
                 Observacoes = (request.Observacoes ?? "").Trim()[..Math.Min((request.Observacoes ?? "").Trim().Length, 500)],
                 FormaPagamento = formaPagamento,
+                ModalidadePagamento = modalidade,
                 StatusPedido = OrderStatus.Pending,
                 StatusPagamento = PaymentStatus.Pending,
                 IdempotencyKey = request.IdempotencyKey
@@ -103,6 +110,25 @@ public static class PedidoEndpoints
             logger.LogInformation("Pedido #{Id} created. Total:{Total} Method:{Method}", pedido.Id, pedido.Total, formaPagamento);
 
             // --- PAYMENT ROUTING ---
+            if (modalidade == PaymentModality.OnDelivery)
+            {
+                pedido.StatusPedido = OrderStatus.Processing;
+                pedido.StatusPagamento = PaymentStatus.Pending;
+                await db.SaveChangesAsync();
+                
+                await wpServico.EnviarMensagemLojaAsync(
+                    $"Novo pedido #{pedido.Id} de {pedido.NomeCliente}! Total: R$ {pedido.Total:N2}. Pagar na entrega ({formaPagamento}).");
+
+                return Results.Ok(new PedidoCreatedResponse
+                {
+                    PedidoId = pedido.Id, 
+                    FormaPagamento = formaPagamento.ToString(),
+                    StatusPagamento = pedido.StatusPagamento.ToString(),
+                    Mensagem = "Pedido recebido! O pagamento sera realizado na entrega."
+                });
+            }
+
+            // Online Payment Routing
             switch (formaPagamento)
             {
                 case PaymentMethod.Pix:
@@ -130,8 +156,8 @@ public static class PedidoEndpoints
                     await db.SaveChangesAsync();
 
                     // TODO: Replace with your production domain URLs
-                    var successUrl = "https://skullshakes.com.br/pedido/sucesso";
-                    var failureUrl = "https://skullshakes.com.br/pedido/falha";
+                    var successUrl = "https://skullshakes-acai.vercel.app/tracking/" + pedido.Id;
+                    var failureUrl = "https://skullshakes-acai.vercel.app/tracking/" + pedido.Id;
 
                     var (checkoutUrl, prefId) = await mpServico.GerarPreferenciaCartaoAsync(
                         pedido.Id, pedido.Total, $"Pedido #{pedido.Id} - Skull Shakes", successUrl, failureUrl);
@@ -147,25 +173,8 @@ public static class PedidoEndpoints
                     });
                 }
 
-                case PaymentMethod.PayOnDelivery:
-                {
-                    pedido.StatusPedido = OrderStatus.Processing;
-                    pedido.StatusPagamento = PaymentStatus.Pending;
-                    await db.SaveChangesAsync();
-
-                    await wpServico.EnviarMensagemLojaAsync(
-                        $"Novo pedido #{pedido.Id} de {pedido.NomeCliente}! Total: R$ {pedido.Total:N2}. Pagar na entrega.");
-
-                    return Results.Ok(new PedidoCreatedResponse
-                    {
-                        PedidoId = pedido.Id, FormaPagamento = "PayOnDelivery",
-                        StatusPagamento = pedido.StatusPagamento.ToString(),
-                        Mensagem = "Pedido recebido! O pagamento sera realizado na entrega."
-                    });
-                }
-
                 default:
-                    return Results.BadRequest("Forma de pagamento nao suportada.");
+                    return Results.BadRequest("Método de pagamento não suportado para pagamento online.");
             }
         });
 

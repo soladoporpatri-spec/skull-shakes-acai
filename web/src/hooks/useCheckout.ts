@@ -19,7 +19,7 @@ export type CheckoutState = {
     deliveryFee: number | null;
     distance: number | null;
   };
-  payment: { method: string; needsChange: boolean; changeFor: string; };
+  payment: { method: string; modality: string; needsChange: boolean; changeFor: string; };
   notes: string;
 };
 

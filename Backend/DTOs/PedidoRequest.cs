@@ -1,4 +1,4 @@
-﻿namespace SkullShakes.Api.DTOs;
+namespace SkullShakes.Api.DTOs;
 
 public class PedidoRequest
 {
@@ -8,6 +8,7 @@ public class PedidoRequest
     public string Cep { get; set; } = string.Empty;
     public string Observacoes { get; set; } = string.Empty;
     public string FormaPagamento { get; set; } = string.Empty;
+    public string ModalidadePagamento { get; set; } = "Online";
     public string? IdempotencyKey { get; set; }
     public decimal? DeliveryFee { get; set; }
     public List<ItemPedidoRequest> Itens { get; set; } = new();

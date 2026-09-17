@@ -1,4 +1,4 @@
-using SkullShakes.Api.Enums;
+content = '''using SkullShakes.Api.Enums;
 
 namespace SkullShakes.Api.Modelos;
 
@@ -30,3 +30,6 @@ public class Pedido
     public decimal DeliveryFee { get; set; }
     public decimal Total { get; set; }
 }
+'''
+with open('Backend/Modelos/Pedido.cs', 'w', encoding='utf-8') as f:
+    f.write(content)

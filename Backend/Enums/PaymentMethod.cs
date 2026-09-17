@@ -5,5 +5,5 @@ public enum PaymentMethod
     Pix,
     CreditCard,
     DebitCard,
-    PayOnDelivery
+    Cash
 }

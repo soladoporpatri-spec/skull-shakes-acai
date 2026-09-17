@@ -473,6 +473,7 @@ export default function PedidosTable() {
                   <TableHead>Total</TableHead>
 
                   <TableHead>Pagamento</TableHead>
+              <TableHead>Modalidade</TableHead>
 
                   <TableHead>Status Pedido</TableHead>
 

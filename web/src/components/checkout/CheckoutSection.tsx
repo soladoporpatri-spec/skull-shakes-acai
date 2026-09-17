@@ -94,7 +94,8 @@ export default function CheckoutSection() {
         ]
           .filter(Boolean)
           .join(', '),
-        formaPagamento: state.payment.method, // already the backend enum value
+        formaPagamento: state.payment.method,
+        modalidadePagamento: state.payment.modality, // already the backend enum value
         observacoes: state.notes,
         deliveryFee: state.address.deliveryFee,
         idempotencyKey: idempotencyKeyRef.current,
