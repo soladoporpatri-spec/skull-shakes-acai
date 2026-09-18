@@ -142,15 +142,13 @@ export default function Home() {
       >
         
         {/* Header / Logo */}
-        <div className="absolute top-8 left-4 md:top-12 md:left-12 right-4 md:right-12 z-50 flex justify-between items-center pointer-events-none">
-          <h1 className="text-3xl font-display font-black tracking-tight uppercase drop-shadow-lg pointer-events-auto">
+        <div className="absolute top-0 left-0 right-0 z-50 flex justify-between items-center pointer-events-none px-5 py-6 md:px-12 md:py-10">
+          <h1 className="text-2xl md:text-3xl font-display font-black tracking-tight uppercase drop-shadow-lg pointer-events-auto">
             <span className="transition-colors duration-500" style={{ color: activeHero.theme.text }}>SKULL</span> <span className="bg-gradient-to-r from-[#d946ef] to-[#a855f7] bg-clip-text text-transparent">SHAKES</span>
           </h1>
-          <Link href="/acompanhar" className="pointer-events-auto hidden sm:flex items-center text-white/80 hover:text-white transition-colors text-xs md:text-sm font-bold tracking-widest uppercase border border-white/20 hover:border-white px-4 py-2 rounded-full bg-black/20 backdrop-blur-sm">
-            Acompanhar Pedido
-          </Link>
-          <Link href="/acompanhar" className="pointer-events-auto sm:hidden flex items-center text-white transition-colors text-xs font-bold tracking-widest uppercase bg-white/10 hover:bg-white/20 p-2 rounded-full backdrop-blur-sm">
-             <Search className="w-4 h-4" />
+          <Link href="/acompanhar" className="pointer-events-auto flex items-center gap-2 text-white/80 hover:text-white transition-colors text-xs md:text-sm font-bold tracking-widest uppercase border border-white/20 hover:border-white/60 px-4 py-2.5 md:px-5 md:py-2.5 bg-black/20 backdrop-blur-sm">
+            <Search className="w-4 h-4" />
+            <span className="hidden sm:inline">Acompanhar Pedido</span>
           </Link>
         </div>
 

@@ -12,18 +12,18 @@ export default function CartButton() {
     document.getElementById('checkout')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  if (totalItems === 0) return null;
+
   return (
     <button 
       onClick={scrollToCheckout}
       aria-label={`Carrinho de Compras com ${totalItems} itens`}
-      className="fixed top-4 right-4 md:top-8 md:right-8 z-50 bg-black/80 backdrop-blur-md p-4 rounded-full border border-white/10 hover:border-white focus:outline-none focus:ring-2 focus:ring-white transition-all flex items-center gap-2 group shadow-xl"
+      className="fixed bottom-6 right-6 z-50 bg-white text-black backdrop-blur-md pl-5 pr-6 py-3 rounded-full border border-white/20 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white transition-all flex items-center gap-3 group shadow-2xl"
     >
-      <ShoppingCart className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
-      {totalItems > 0 && (
-        <span className="bg-white text-black text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center absolute -top-2 -right-2 shadow-lg border border-black">
-          {totalItems}
-        </span>
-      )}
+      <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+      <span className="font-bold text-sm uppercase tracking-wider">
+        Carrinho ({totalItems})
+      </span>
     </button>
   );
 }
