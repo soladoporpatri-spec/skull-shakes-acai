@@ -9,3 +9,5 @@ obj/
 *.zip
 *.rar
 
+
+.wwebjs_auth*
