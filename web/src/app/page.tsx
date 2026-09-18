@@ -212,8 +212,7 @@ export default function Home() {
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  className="absolute object-contain w-auto max-h-[75vh] md:max-h-[85vh] drop-shadow-[0_20px_50px_rgba(0,0,0,0.7)] z-10 bottom-0"
-                  style={{ imageRendering: 'auto' }}
+                  className="absolute object-contain w-auto max-h-[75vh] md:max-h-[85vh] z-10 bottom-0"
                 />
               </AnimatePresence>
             </div>
