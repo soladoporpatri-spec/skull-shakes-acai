@@ -142,6 +142,19 @@ export default function CheckoutSection() {
 
       if (data.pedidoId) {
         setCreatedOrderId(data.pedidoId);
+        
+        // Save to history
+        try {
+          const histStr = localStorage.getItem('skullshakes_historico');
+          let historico = histStr ? JSON.parse(histStr) : [];
+          historico.push({
+            id: data.pedidoId,
+            date: new Date().toISOString(),
+            total: subtotal + (state.address.deliveryFee || 0)
+          });
+          if (historico.length > 5) historico = historico.slice(-5);
+          localStorage.setItem('skullshakes_historico', JSON.stringify(historico));
+        } catch(e){}
       }
 
       // Route based on payment method response

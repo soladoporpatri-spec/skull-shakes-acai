@@ -5,7 +5,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://skull-shakes-acai.onrender.com';
+    const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'https://skull-shakes-acai.onrender.com').replace(/\/$/, '');
     
     const res = await fetch(backendUrl + '/pedidos/' + params.id, {
       method: 'GET',

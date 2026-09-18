@@ -1,13 +1,31 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Search } from 'lucide-react';
+import { ArrowLeft, Search, Clock } from 'lucide-react';
+
+interface HistItem {
+  id: number;
+  date: string;
+  total: number;
+}
+
 
 export default function AcompanharPage() {
   const [pedidoId, setPedidoId] = useState('');
+  const [historico, setHistorico] = useState<HistItem[]>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    try {
+      const histStr = localStorage.getItem('skullshakes_historico');
+      if (histStr) {
+        const parsed = JSON.parse(histStr);
+        setHistorico(parsed.reverse()); // most recent first
+      }
+    } catch(e){}
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +70,37 @@ export default function AcompanharPage() {
             <Search className="w-4 h-4 mr-2" />
             Buscar Pedido
           </button>
+
         </form>
+
+        {historico.length > 0 && (
+          <div className="mt-12 border-t border-white/10 pt-8">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-zinc-400 mb-4 flex items-center">
+              <Clock className="w-4 h-4 mr-2" />
+              Seus Pedidos Recentes
+            </h2>
+            <div className="space-y-3">
+              {historico.map((h, i) => (
+                <Link
+                  key={i}
+                  href={/pedido/}
+                  className="flex items-center justify-between p-4 bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+                >
+                  <span className="font-mono text-white text-lg">#{h.id}</span>
+                  <div className="text-right">
+                    <span className="block text-zinc-300 text-sm font-medium">
+                      R$ {h.total.toFixed(2).replace('.', ',')}
+                    </span>
+                    <span className="block text-zinc-500 text-xs">
+                      {new Date(h.date).toLocaleDateString('pt-BR')}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
