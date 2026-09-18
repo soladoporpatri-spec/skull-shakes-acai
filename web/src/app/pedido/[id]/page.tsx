@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, use } from 'react';
 import Link from 'next/link';
 import { Loader2, CheckCircle2, Clock, Package, Truck, ArrowLeft } from 'lucide-react';
 
@@ -15,7 +15,10 @@ interface OrderData {
   dataCriacao: string;
 }
 
-export default function PedidoTrackingPage({ params }: { params: { id: string } }) {
+export default function PedidoTrackingPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = use(params);
+  const orderId = resolvedParams.id;
+
   const [order, setOrder] = useState<OrderData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,8 +28,7 @@ export default function PedidoTrackingPage({ params }: { params: { id: string } 
 
     const fetchOrder = async () => {
       try {
-        
-        const res = await fetch(`/api/pedidos/${params.id}`);
+        const res = await fetch(`/api/pedidos/${orderId}`);
         if (!res.ok) {
           if (res.status === 404) throw new Error('Pedido não encontrado.');
           throw new Error('Erro ao carregar pedido.');
@@ -47,7 +49,7 @@ export default function PedidoTrackingPage({ params }: { params: { id: string } 
     interval = setInterval(fetchOrder, 5000);
 
     return () => clearInterval(interval);
-  }, [params.id]);
+  }, [orderId]);
 
   if (loading) {
     return (
@@ -86,7 +88,7 @@ export default function PedidoTrackingPage({ params }: { params: { id: string } 
   if (order.statusPedido === 'Processing' && currentStep >= 1) {
     currentStep = 2; // Preparação
   }
-  if (order.statusPedido === 'OutForDelivery') {
+  if (order.statusPedido === 'Shipped' || order.statusPedido === 'OutForDelivery') {
     currentStep = 3; // Entrega
   }
   if (order.statusPedido === 'Delivered') {
