@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useAdicionais, useToggleAdicional } from '@/hooks/useAdicionais';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
@@ -47,7 +47,7 @@ export default function AdicionaisList() {
     if (!acc[cat]) acc[cat] = [];
     acc[cat].push(curr);
     return acc;
-  }, {} as Record<string, typeof adicionais>);
+  }, {} as Record<string, any>);
 
   return (
     <div className="space-y-6">
@@ -59,7 +59,7 @@ export default function AdicionaisList() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {items.map(item => (
+              {items.map((item: any) => (
                 <div key={item.id} className="flex items-center justify-between p-3 border border-border rounded-lg bg-card">
                   <div className="space-y-1">
                     <Label className="text-sm font-medium">{item.nome}</Label>
@@ -69,7 +69,7 @@ export default function AdicionaisList() {
                     checked={item.disponivel}
                     onCheckedChange={() => toggleAdicional.mutate(item.id)}
                     disabled={toggleAdicional.isPending}
-                    aria-label={Disponibilidade de }
+                    aria-label={`Disponibilidade de ${item.nome}`}
                   />
                 </div>
               ))}

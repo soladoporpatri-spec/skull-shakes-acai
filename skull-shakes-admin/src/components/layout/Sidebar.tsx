@@ -3,12 +3,18 @@
 
 
 import React from "react";
-
 import Link from "next/link";
-
 import { usePathname } from "next/navigation";
-
-import { LayoutDashboard, ShoppingBag, Package, LogOut, Skull } from "lucide-react";
+import {
+  LayoutDashboard,
+  ShoppingBag,
+  Package,
+  Settings,
+  LogOut,
+  Bike,
+  Users,
+  Skull
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 

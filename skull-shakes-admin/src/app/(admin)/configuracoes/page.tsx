@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -92,7 +92,7 @@ export default function ConfiguracoesPage() {
             />
           </div>
 
-          <div className={space-y-4 }>
+          <div className="space-y-4">
             <h3 className="font-medium">Agenda Semanal</h3>
             {diasSemana.map((dia) => (
               <div key={dia.id} className="flex items-center gap-4">

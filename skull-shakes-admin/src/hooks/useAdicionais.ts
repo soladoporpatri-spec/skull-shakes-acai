@@ -1,4 +1,4 @@
-﻿import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import api from '@/lib/api';
 
@@ -25,7 +25,7 @@ export function useToggleAdicional() {
 
   return useMutation({
     mutationFn: async (id: number) => {
-      await api.put(/admin/adicionais//toggle);
+      await api.put(`/admin/adicionais/${id}/toggle`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['adicionais'] });

@@ -2,14 +2,10 @@
 
 
 
-import React from "react";
-
+import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-
-import { Menu } from "lucide-react";
-
+import { Menu, Store, BellRing, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Store } from "lucide-react";
 import { useStoreStatus, useUpdateStoreStatus } from "@/hooks/useStoreStatus";
 import { OrderNotifier } from "@/components/pedidos/OrderNotifier";
 
@@ -42,7 +38,29 @@ export default function Header({ onMenuClick }: HeaderProps) {
   const title = pageTitles[pathname] || "Dashboard";
   const { data: status, isLoading } = useStoreStatus();
   const updateStatus = useUpdateStoreStatus();
-  
+  const [soundEnabled, setSoundEnabled] = useState(true);
+
+  useEffect(() => {
+    // Check if user has interacted with document
+    const checkAudio = async () => {
+      try {
+        const audio = new Audio('/notification.wav');
+        audio.volume = 0;
+        await audio.play();
+        setSoundEnabled(true);
+      } catch (e) {
+        setSoundEnabled(false);
+      }
+    };
+    checkAudio();
+  }, []);
+
+  const enableSound = () => {
+    const audio = new Audio('/notification.wav');
+    audio.volume = 0;
+    audio.play().then(() => setSoundEnabled(true)).catch(() => {});
+  };
+
   const handleToggle = () => {
     if (status) {
       updateStatus.mutate(!status.isAberta);
@@ -86,6 +104,12 @@ export default function Header({ onMenuClick }: HeaderProps) {
       </div>
 
       <div className="ml-auto flex items-center gap-4">
+        {!soundEnabled && (
+          <Button variant="outline" size="sm" onClick={enableSound} className="text-orange-500 border-orange-500 hover:bg-orange-500/10 hidden sm:flex">
+            <Volume2 className="h-4 w-4 mr-2" />
+            Ativar Som
+          </Button>
+        )}
         {!isLoading && status && (
           <Button
             variant={status.isAberta ? "default" : "destructive"}

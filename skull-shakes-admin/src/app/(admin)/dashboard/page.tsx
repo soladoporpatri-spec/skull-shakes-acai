@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useMemo } from "react";
 import { usePedidos } from "@/hooks/usePedidos";
@@ -26,9 +26,36 @@ import {
 } from "lucide-react";
 import { isToday, differenceInMinutes } from "date-fns";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import api from "@/lib/api";
+import { toast } from "sonner";
 
 export default function DashboardPage() {
   const { data: pedidos, isLoading } = usePedidos();
+  const queryClient = useQueryClient();
+
+  const limparMutation = useMutation({
+    mutationFn: async () => {
+      const response = await api.post("/admin/pedidos/limpar");
+      return response.data;
+    },
+    onSuccess: (data) => {
+      toast.success(data.message || "Limpeza realizada com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ["pedidos"] });
+    },
+    onError: () => {
+      toast.error("Erro ao realizar limpeza de cache.");
+    }
+  });
+
+  const handleLimpeza = () => {
+    if (confirm("Tem certeza que deseja limpar o cache e remover os pedidos antigos já finalizados? Isso melhorará a performance da Dashboard.")) {
+      limparMutation.mutate();
+    }
+  };
+
 
   const { metrics, alerts } = useMemo(() => {
     if (!pedidos) {
@@ -61,9 +88,9 @@ export default function DashboardPage() {
     }).length;
 
     const arr = [];
-    if (delayed > 0) arr.push(\ pedido(s) ATRASADO(S));
-    if (paymentFailed > 0) arr.push(\ pagamento(s) RECUSADO(S));
-    if (paymentPending > 0) arr.push(\ aguardando pagamento);
+    if (delayed > 0) arr.push(`${delayed} pedido(s) ATRASADO(S)`);
+    if (paymentFailed > 0) arr.push(`${paymentFailed} pagamento(s) RECUSADO(S)`);
+    if (paymentPending > 0) arr.push(`${paymentPending} aguardando pagamento`);
 
     return {
       metrics: {
@@ -85,6 +112,21 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
+
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h2 className="text-3xl font-bold tracking-tight">Visão Geral</h2>
+        <Button 
+          variant="destructive" 
+          size="sm" 
+          onClick={handleLimpeza} 
+          disabled={limparMutation.isPending}
+          className="shadow-sm"
+        >
+          <Trash2 className="w-4 h-4 mr-2" />
+          {limparMutation.isPending ? "Limpando..." : "Limpar Cache & Antigos"}
+        </Button>
+      </div>
+
       {/* Alertas */}
       {!isLoading && alerts.length > 0 && (
         <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">

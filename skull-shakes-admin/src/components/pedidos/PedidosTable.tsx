@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import {
@@ -27,8 +27,8 @@ import {
   orderStatusLabels,
   paymentMethodLabels,
 } from "@/lib/formatters";
-import OrderStatusBadge from "./OrderStatusBadge";
-import PaymentStatusBadge from "./PaymentStatusBadge";
+import { OrderStatusBadge, PaymentStatusBadge } from "./StatusBadge";
+import { useUpdatePedidoStatus } from "@/hooks/usePedidos";
 import PedidoSheet from "./PedidoSheet";
 import { differenceInMinutes, formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -44,12 +44,12 @@ const ITEMS_PER_PAGE = 10;
 const allStatuses: OrderStatus[] = [
   "Pending",
   "PaymentPending",
-  "Confirmed",
   "Processing",
-  "Ready",
-  "InTransit",
+  "Processing",
+  "Processing",
+  "Shipped",
   "Delivered",
-  "Cancelled",
+  "Canceled",
 ];
 
 const allPaymentMethods = ["Pix", "CreditCard", "DebitCard", "Cash"];
@@ -68,6 +68,8 @@ export default function PedidosTable({
 
   const [selectedPedido, setSelectedPedido] = useState<Pedido | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const updateStatusMutation = useUpdatePedidoStatus();
+
 
   // Debounced search
   const handleSearchChange = (val: string) => {
@@ -264,10 +266,51 @@ export default function PedidosTable({
                         )}
                       </TableCell>
                       <TableCell>
-                        <OrderStatusBadge status={pedido.statusPedido} />
+                        <Select
+                          value={pedido.statusPedido}
+                          onValueChange={(val) => {
+                            updateStatusMutation.mutate({
+                              id: pedido.id,
+                              status: val as OrderStatus,
+                            });
+                          }}
+                          disabled={updateStatusMutation.isPending}
+                        >
+                          <SelectTrigger className="h-9 w-fit border-0 bg-transparent hover:bg-white/5 focus:ring-0 px-2 py-1 shadow-none gap-2">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {allStatuses.map((s) => (
+                              <SelectItem key={s} value={s}>
+                                <OrderStatusBadge status={s as OrderStatus} />
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </TableCell>
                       <TableCell>
-                        <PaymentStatusBadge status={pedido.statusPagamento} />
+                        <Select
+                          value={pedido.statusPagamento}
+                          onValueChange={(val) => {
+                            updateStatusMutation.mutate({
+                              id: pedido.id,
+                              status: pedido.statusPedido,
+                              paymentStatus: val as PaymentStatus,
+                            });
+                          }}
+                          disabled={updateStatusMutation.isPending}
+                        >
+                          <SelectTrigger className="h-9 w-fit border-0 bg-transparent hover:bg-white/5 focus:ring-0 px-2 py-1 shadow-none gap-2">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {["Pending", "Processing", "Paid", "Failed", "Canceled", "Expired", "Refunded"].map((s) => (
+                              <SelectItem key={s} value={s}>
+                                <PaymentStatusBadge status={s as PaymentStatus} />
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </TableCell>
                       <TableCell>
                         <Button variant="ghost" size="sm" onClick={() => openSheet(pedido)}>

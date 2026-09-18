@@ -1,4 +1,4 @@
-﻿import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import api from '@/lib/api';
 
@@ -40,7 +40,7 @@ export function useUpdatePedidoMotoboy() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, motoboyId }: { id: number; motoboyId: number | null }) => {
-      await api.put(/admin/pedidos//motoboy, { motoboyId });
+      await api.put(`/admin/pedidos/${id}/motoboy`, { motoboyId });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pedidos'] });
@@ -53,7 +53,7 @@ export function useFechamento(date: string) {
   return useQuery({
     queryKey: ['fechamento', date],
     queryFn: async () => {
-      const response = await api.get<FechamentoReport>(/admin/relatorios/fechamento?date=);
+      const response = await api.get<FechamentoReport>(`/admin/relatorios/fechamento?date=${date}`);
       return response.data;
     },
   });

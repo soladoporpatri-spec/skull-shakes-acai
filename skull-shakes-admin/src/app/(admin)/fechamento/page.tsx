@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import { format } from "date-fns";
@@ -9,7 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/formatters";
-import { Bike, DollarSign, CreditCard, Plus } from "lucide-react";\nimport { useMutation, useQueryClient } from "@tanstack/react-query";\nimport { toast } from "sonner";\nimport api from "@/lib/api";
+import { Bike, DollarSign, CreditCard, Plus } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import api from "@/lib/api";
 
 export default function FechamentoPage() {
   const [date, setDate] = useState(format(new Date(), "yyyy-MM-dd"));
@@ -133,8 +136,8 @@ export default function FechamentoPage() {
                           <TableCell>{m.totalEntregas}</TableCell>
                           <TableCell className="text-red-500">{formatCurrency(m.totalTaxas)}</TableCell>
                           <TableCell className="text-yellow-500">{formatCurrency(m.totalDinheiroRecebido)}</TableCell>
-                          <TableCell className={	ext-right font-bold }>
-                            {isLojaRecebe ? Devolve  : Loja paga }
+                          <TableCell className="text-right font-bold">
+                            {isLojaRecebe ? `Devolve ${formatCurrency(acerto)}` : `Loja paga ${formatCurrency(Math.abs(acerto))}`}
                           </TableCell>
                         </TableRow>
                       );

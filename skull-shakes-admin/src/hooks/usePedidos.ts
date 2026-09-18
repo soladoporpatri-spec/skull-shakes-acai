@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 import api from "@/lib/api";
 
-import { Pedido, OrderStatus } from "@/types";
+import { Pedido, OrderStatus, PaymentStatus } from "@/types";
 
 
 
@@ -41,23 +41,16 @@ export function useUpdatePedidoStatus() {
 
 
   return useMutation({
-
     mutationFn: async ({
-
       id,
-
       status,
-
+      paymentStatus
     }: {
-
       id: number;
-
       status: OrderStatus;
-
+      paymentStatus?: PaymentStatus;
     }) => {
-
-      await api.put(`/admin/pedidos/${id}/status`, { status });
-
+      await api.put(`/admin/pedidos/${id}/status`, { status, paymentStatus });
     },
 
     onSuccess: () => {
@@ -84,9 +77,28 @@ export function usePedidoHistorico(id?: number) {
     queryKey: ["pedidos", id, "historico"],
     queryFn: async () => {
       if (!id) return [];
-      const response = await api.get(/admin/pedidos//historico);
+      const response = await api.get(`/admin/pedidos/${id}/historico`);
       return response.data as { id: number; mensagem: string; responsavel: string; dataAlteracao: string; statusAnterior?: string; statusNovo?: string }[];
     },
     enabled: !!id,
+  });
+}
+
+
+export interface Cliente {
+  telefone: string;
+  nome: string;
+  totalGasto: number;
+  quantidadePedidos: number;
+  ultimoPedido: string;
+}
+
+export function useClientes() {
+  return useQuery({
+    queryKey: ["clientes"],
+    queryFn: async () => {
+      const response = await api.get<Cliente[]>("/admin/clientes");
+      return response.data;
+    },
   });
 }

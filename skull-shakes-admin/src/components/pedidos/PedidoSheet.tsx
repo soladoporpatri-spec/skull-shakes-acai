@@ -49,7 +49,7 @@ export default function PedidoSheet({ pedido, open, onOpenChange }: PedidoSheetP
   };
 
   const isDelivery = pedido.modalidadePagamento === 'OnDelivery' || pedido.modalidadePagamento === 'Online';
-  const showAssignDriver = isDelivery && (pedido.statusPedido === 'Ready' || pedido.statusPedido === 'InTransit' || pedido.statusPedido === 'Delivered');
+  const showAssignDriver = isDelivery && (pedido.statusPedido === 'Processing' || pedido.statusPedido === 'Shipped' || pedido.statusPedido === 'Delivered');
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -87,32 +87,32 @@ export default function PedidoSheet({ pedido, open, onOpenChange }: PedidoSheetP
               )}
 
               {pedido.statusPedido === 'Processing' && (
-                <Button variant="default" className="w-full bg-orange-500 hover:bg-orange-600 text-white" onClick={() => setStatus('Ready')} disabled={updateStatus.isPending}>
+                <Button variant="default" className="w-full bg-orange-500 hover:bg-orange-600 text-white" onClick={() => setStatus('Processing')} disabled={updateStatus.isPending}>
                   Marcar como Pronto
                 </Button>
               )}
 
-              {pedido.statusPedido === 'Ready' && isDelivery && (
-                <Button variant="default" className="w-full bg-blue-500 hover:bg-blue-600 text-white" onClick={() => setStatus('InTransit')} disabled={updateStatus.isPending}>
+              {pedido.statusPedido === 'Processing' && isDelivery && (
+                <Button variant="default" className="w-full bg-blue-500 hover:bg-blue-600 text-white" onClick={() => setStatus('Shipped')} disabled={updateStatus.isPending}>
                   Saiu para Entrega
                 </Button>
               )}
 
-              {pedido.statusPedido === 'Ready' && !isDelivery && (
+              {pedido.statusPedido === 'Processing' && !isDelivery && (
                 <Button variant="default" className="w-full bg-green-600 hover:bg-green-700 text-white" onClick={() => setStatus('Delivered')} disabled={updateStatus.isPending}>
                   Marcar como Retirado
                 </Button>
               )}
 
-              {pedido.statusPedido === 'InTransit' && (
+              {pedido.statusPedido === 'Shipped' && (
                 <Button variant="default" className="w-full bg-green-600 hover:bg-green-700 text-white" onClick={() => setStatus('Delivered')} disabled={updateStatus.isPending}>
                   Marcar como Entregue
                 </Button>
               )}
 
-              {pedido.statusPedido !== 'Delivered' && pedido.statusPedido !== 'Cancelled' && (
+              {pedido.statusPedido !== 'Delivered' && pedido.statusPedido !== 'Canceled' && (
                 <Button variant="destructive" className="w-full mt-4" onClick={() => {
-                  if(window.confirm('Tem certeza que deseja CANCELAR este pedido?')) setStatus('Cancelled');
+                  if(window.confirm('Tem certeza que deseja CANCELAR este pedido?')) setStatus('Canceled');
                 }} disabled={updateStatus.isPending}>
                   Cancelar Pedido
                 </Button>
@@ -127,7 +127,7 @@ export default function PedidoSheet({ pedido, open, onOpenChange }: PedidoSheetP
                 value={pedido.motoboyId?.toString() || "unassigned"}
                 onValueChange={(val) => {
                   if (val === "unassigned") return;
-                  updateMotoboy.mutate({ pedidoId: pedido.id, motoboyId: parseInt(val) });
+                  updateMotoboy.mutate({ id: pedido.id, motoboyId: parseInt(val) });
                 }}
               >
                 <SelectTrigger>
@@ -136,8 +136,8 @@ export default function PedidoSheet({ pedido, open, onOpenChange }: PedidoSheetP
                 <SelectContent>
                   <SelectItem value="unassigned">Sem entregador</SelectItem>
                   {motoboys?.map((m) => (
-                    <SelectItem key={m.motoboyId} value={m.motoboyId.toString()}>
-                      {m.motoboyNome}
+                    <SelectItem key={m.id} value={m.id.toString()}>
+                      {m.nome}
                     </SelectItem>
                   ))}
                 </SelectContent>
