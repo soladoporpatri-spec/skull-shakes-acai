@@ -79,6 +79,25 @@ public static class AdminEndpoints
         // --- PROTECTED ADMIN ENDPOINTS ---
         var admin = app.MapGroup("/admin").RequireAuthorization("AdminPolicy");
 
+                admin.MapGet("/clientes", async (AppDbContext db) =>
+        {
+            var clientes = await db.Pedidos
+                .Where(p => p.StatusPedido != OrderStatus.Canceled)
+                .GroupBy(p => p.Telefone)
+                .Select(g => new
+                {
+                    Telefone = g.Key,
+                    Nome = g.OrderByDescending(p => p.DataPedido).First().NomeCliente,
+                    TotalGasto = g.Sum(p => p.Total),
+                    QuantidadePedidos = g.Count(),
+                    UltimoPedido = g.Max(p => p.DataPedido)
+                })
+                .OrderByDescending(c => c.TotalGasto)
+                .ToListAsync();
+
+            return Results.Ok(clientes);
+        });
+
         admin.MapGet("/pedidos", async (AppDbContext db) =>
         {
             var pedidos = await db.Pedidos
@@ -101,6 +120,32 @@ public static class AdminEndpoints
                 }).ToListAsync();
             return Results.Ok(pedidos);
         });
+        // --- LIMPEZA DE PEDIDOS ---
+        admin.MapPost("/pedidos/limpar", async (AppDbContext db, ClaimsPrincipal user, ILogger<Program> logger) =>
+        {
+            var adminId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var thresholdDate = DateTime.UtcNow.AddDays(-1);
+            
+            // Delete terminal orders older than 1 day
+            var pedidosToDelete = await db.Pedidos
+                .Where(p => (p.StatusPedido == OrderStatus.Delivered || 
+                             p.StatusPedido == OrderStatus.Canceled || 
+                             p.StatusPagamento == PaymentStatus.Refunded) && 
+                            p.DataPedido < thresholdDate)
+                .Include(p => p.Itens)
+                    .ThenInclude(i => i.Adicionais)
+                .ToListAsync();
+
+            if (pedidosToDelete.Any())
+            {
+                db.Pedidos.RemoveRange(pedidosToDelete);
+                await db.SaveChangesAsync();
+                logger.LogWarning("Admin {AdminId} fez a limpeza de {Count} pedidos antigos acumulados.", adminId, pedidosToDelete.Count);
+            }
+
+            return Results.Ok(new { message = $"Limpeza concluida. {pedidosToDelete.Count} pedidos antigos (ha mais de 24h finalizados) removidos." });
+        });
+
 
         admin.MapPut("/pedidos/{id}/status", async (
             int id, StatusUpdateRequest request, AppDbContext db, ClaimsPrincipal user, ILogger<Program> logger) =>
