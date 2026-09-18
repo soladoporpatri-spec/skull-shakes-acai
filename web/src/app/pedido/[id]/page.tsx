@@ -25,8 +25,8 @@ export default function PedidoTrackingPage({ params }: { params: { id: string } 
 
     const fetchOrder = async () => {
       try {
-        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5210';
-        const res = await fetch(`${API_URL}/pedidos/${params.id}`);
+        
+        const res = await fetch(`/api/pedidos/${params.id}`);
         if (!res.ok) {
           if (res.status === 404) throw new Error('Pedido não encontrado.');
           throw new Error('Erro ao carregar pedido.');

@@ -35,7 +35,7 @@ export default function CheckoutSection() {
   useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5210'}/pedidos/configuracoes/status`);
+        const res = await fetch('/api/status');
         const data = await res.json();
         setIsAberta(data.isAberta);
       } catch (e) {

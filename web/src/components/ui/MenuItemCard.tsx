@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import { Check, ShoppingBag, Plus } from 'lucide-react';
 
 export default function MenuItemCard({ item, isInCart, onAdd }: any) {

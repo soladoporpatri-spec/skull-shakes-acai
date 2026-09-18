@@ -86,11 +86,7 @@ export default function PedidoSheet({ pedido, open, onOpenChange }: PedidoSheetP
                 </Button>
               )}
 
-              {pedido.statusPedido === 'Processing' && (
-                <Button variant="default" className="w-full bg-orange-500 hover:bg-orange-600 text-white" onClick={() => setStatus('Processing')} disabled={updateStatus.isPending}>
-                  Marcar como Pronto
-                </Button>
-              )}
+
 
               {pedido.statusPedido === 'Processing' && isDelivery && (
                 <Button variant="default" className="w-full bg-blue-500 hover:bg-blue-600 text-white" onClick={() => setStatus('Shipped')} disabled={updateStatus.isPending}>

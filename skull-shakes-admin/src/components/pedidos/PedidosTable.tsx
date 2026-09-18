@@ -44,8 +44,7 @@ const ITEMS_PER_PAGE = 10;
 const allStatuses: OrderStatus[] = [
   "Pending",
   "PaymentPending",
-  "Processing",
-  "Processing",
+  "Paid",
   "Processing",
   "Shipped",
   "Delivered",

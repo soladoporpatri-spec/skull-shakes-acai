@@ -7,104 +7,62 @@ import CheckoutSection from '@/components/checkout/CheckoutSection';
 import MenuItemCard from '@/components/ui/MenuItemCard';
 import { useCartStore } from '@/store/cartStore';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Search } from 'lucide-react';
+import Link from 'next/link';
 import { Check, ShoppingBag, ChevronRight, ChevronLeft, ArrowDown } from 'lucide-react';
+import { getFeaturedProducts, getMenuByCategory, Product } from '@/data/products';
 
 type CategoryType = 'Açaís' | 'Linha Nutella' | 'Batidinhas Gourmet';
 
 export default function Home() {
+
+    const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Restaurant',
+    name: 'Skull Shakes',
+    image: 'https://skullshakes.com.br/logo.jpg',
+    '@id': 'https://skullshakes.com.br',
+    url: 'https://skullshakes.com.br',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Anápolis',
+      addressRegion: 'GO',
+      addressCountry: 'BR'
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: [
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+          'Sunday'
+        ],
+        opens: '14:00',
+        closes: '23:00'
+      }
+    ],
+    servesCuisine: ['Açaí', 'Milkshake', 'Dessert'],
+    priceRange: '$$',
+    acceptsReservations: 'false'
+  };
+
   const addItem = useCartStore((state) => state.addItem);
   const cartItems = useCartStore((state) => state.items);
 
   const [activeCategory, setActiveCategory] = useState<CategoryType>('Açaís');
   
   // Hero Carousel State
-  const featuredProducts = [
-    {
-      id: '1',
-      shortName: 'TRADICIONAL',
-      label: 'AÇAÍ',
-      desc: 'Açaí puro expresso incrivelmente cremoso.',
-      flavorType: 'acai',
-      image: '/products/bottle-acai.png',
-      theme: { bg: '#1c0330', text: '#ffffff', accent: '#a855f7' }
-    },
-    {
-      id: 'ss-maracuja',
-      shortName: 'MARACUJÁ',
-      label: 'BATIDINHA GOURMET',
-      desc: 'Batidinha gourmet de maracujá suíço com geleia, incrivelmente refrescante.',
-      flavorType: 'passion',
-      image: '/products/bottle-maracuja.png',
-      theme: { bg: '#fbbf24', text: '#1c1917', accent: '#d97706' }
-    },
-    {
-      id: 'ss-morango',
-      shortName: 'MORANGO',
-      label: 'BATIDINHA GOURMET',
-      desc: 'Batidinha gourmet de morango ao leite com geleia, cremosa e marcante.',
-      flavorType: 'strawberry',
-      image: '/products/bottle-morango.png',
-      theme: { bg: '#881337', text: '#ffffff', accent: '#fda4af' }
-    },
-  ];
+  const featuredProducts = getFeaturedProducts();
+  const menu = getMenuByCategory();
 
   const [heroIndex, setHeroIndex] = useState(0);
-  const [direction, setDirection] = useState(1); // 1 = next, -1 = prev
-
+  const [direction, setDirection] = useState(1);
   const activeHero = featuredProducts[heroIndex];
 
-  const menu = [
-    {
-      category: "Açaís",
-      subtitle: "Açaí cremoso na garrafa de 500 ml.",
-      items: [
-        { id: '1', name: 'SS Tradicional', desc: 'Açaí puro expresso.', price: 20, flavorType: 'acai', image: '/products/bottle-acai.png' },
-        { id: '2', name: 'SS com Leite em Pó', desc: 'Açaí, leite em pó e leite condensado.', price: 20, flavorType: 'acai', image: '/products/bottle-acai.png' },
-        { 
-          id: '3', 
-          name: 'Monte o seu SS', 
-          desc: 'Açaí puro. Escolha seus adicionais.', 
-          price: 20, 
-          flavorType: 'acai', 
-          image: '/products/bottle-acai.png',
-          customizable: true,
-          options: [
-              { id: 1, name: 'Banana', price: 3 },
-              { id: 2, name: 'Morango', price: 3 },
-              { id: 3, name: 'Paçoca', price: 3 },
-              { id: 4, name: 'Ninho', price: 3 },
-              { id: 5, name: 'Guaraná', price: 3 },
-              { id: 6, name: 'Nutella', price: 5 }
-            ]
-        }
-      ]
-    },
-    {
-      category: "Linha Nutella",
-      subtitle: "Pra quem não abre mão de muita Nutella.",
-      items: [
-        { id: '4', name: 'SS Tradicional com Nutella', desc: 'Açaí, leite Ninho, leite condensado e Nutella.', price: 25, flavorType: 'acai', image: '/products/bottle-acai.png' },
-        { id: '5', name: 'SS Paçoca com Nutella', desc: 'Açaí, creme de paçoca especial e Nutella.', price: 28, flavorType: 'acai', image: '/products/bottle-acai.png' },
-        { id: '6', name: 'SS Limão com Nutella', desc: 'Batidinha gourmet de limão especial e Nutella.', price: 28, flavorType: 'passion', image: '/products/bottle-maracuja.png' },
-        { id: '7', name: 'SS Morango com Nutella', desc: 'Batidinha gourmet de morango especial e muita Nutella.', price: 28, flavorType: 'strawberry', image: '/products/bottle-morango.png' },
-        { id: '8', name: 'SS Maracujá com Nutella', desc: 'Batidinha gourmet de maracujá especial e muita Nutella.', price: 28, flavorType: 'passion', image: '/products/bottle-maracuja.png' },
-      ]
-    },
-    {
-      category: "Batidinhas Gourmet",
-      subtitle: "Batidas gourmet, ultra cremosas e geladas prontas pra beber no canudo.",
-      items: [
-        { id: 'bg-morango-geleia', name: 'Morango ao Leite c/ Geleia', desc: 'Nossa exclusiva batidinha gourmet de morango ao leite com deliciosa geleia.', price: 18, flavorType: 'strawberry', image: '/products/bottle-morango.png' },
-        { id: 'bg-maracuja-geleia', name: 'Maracujá Suíço c/ Geleia', desc: 'Batidinha gourmet refrescante de maracujá suíço finalizada com geleia.', price: 18, flavorType: 'passion', image: '/products/bottle-maracuja.png' },
-        { id: 'bg-ninho-nutella', name: 'Creme de Ninho c/ Nutella', desc: 'Cremosa batidinha gourmet de leite Ninho recheada de Nutella.', price: 23, flavorType: 'acai', image: '/products/bottle-acai.png' },
-        { id: 'bg-morango-nutella', name: 'Morango c/ Nutella', desc: 'Batidinha gourmet de morango especial acompanhada de Nutella.', price: 20, flavorType: 'strawberry', image: '/products/bottle-morango.png' },
-        { id: 'bg-maracuja-nutella', name: 'Maracujá c/ Nutella', desc: 'Batidinha gourmet de maracujá suíço com uma dose generosa de Nutella.', price: 20, flavorType: 'passion', image: '/products/bottle-maracuja.png' },
-        { id: 'bg-uva-nutella', name: 'Uva c/ Nutella', desc: 'Incrível batidinha gourmet sabor uva perfeitamente harmonizada com Nutella.', price: 20, flavorType: 'acai', image: '/products/bottle-acai.png' },
-      ]
-    }
-  ];
-
-  const handleAddToCart = (e: React.MouseEvent, item: any) => {
+  const handleAddToCart = (e: React.MouseEvent, item: Product) => {
     e.stopPropagation(); 
     addItem({ 
       id: item.id, 
@@ -166,6 +124,7 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen w-full selection:bg-brand selection:text-white font-sans bg-black">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <CartButton />
       
       {/* Solid background color that transitions smoothly */}
@@ -183,10 +142,16 @@ export default function Home() {
       >
         
         {/* Header / Logo */}
-        <div className="absolute top-8 left-8 md:top-12 md:left-12 z-50">
-          <h1 className="text-3xl font-display font-black tracking-tight uppercase drop-shadow-lg">
+        <div className="absolute top-8 left-4 md:top-12 md:left-12 right-4 md:right-12 z-50 flex justify-between items-center pointer-events-none">
+          <h1 className="text-3xl font-display font-black tracking-tight uppercase drop-shadow-lg pointer-events-auto">
             <span className="transition-colors duration-500" style={{ color: activeHero.theme.text }}>SKULL</span> <span className="bg-gradient-to-r from-[#d946ef] to-[#a855f7] bg-clip-text text-transparent">SHAKES</span>
           </h1>
+          <Link href="/acompanhar" className="pointer-events-auto hidden sm:flex items-center text-white/80 hover:text-white transition-colors text-xs md:text-sm font-bold tracking-widest uppercase border border-white/20 hover:border-white px-4 py-2 rounded-full bg-black/20 backdrop-blur-sm">
+            Acompanhar Pedido
+          </Link>
+          <Link href="/acompanhar" className="pointer-events-auto sm:hidden flex items-center text-white transition-colors text-xs font-bold tracking-widest uppercase bg-white/10 hover:bg-white/20 p-2 rounded-full backdrop-blur-sm">
+             <Search className="w-4 h-4" />
+          </Link>
         </div>
 
         {/* Editorial Layout Wrapper */}
