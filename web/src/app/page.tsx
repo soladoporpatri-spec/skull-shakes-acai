@@ -199,18 +199,21 @@ export default function Home() {
 
           {/* Right Column: The Bottle Illusion */}
           <div className="relative flex items-center justify-center md:justify-end pr-0 md:pr-12 z-10 order-1 md:order-2 h-[45vh] md:h-full pointer-events-none">
-            <div className="relative w-full max-w-[34rem] h-full md:max-w-[48rem] flex items-center justify-center">
+            <div className="relative w-full max-w-[34rem] h-full md:max-w-[42rem] flex items-end justify-center">
               <AnimatePresence mode="popLayout" custom={direction}>
                 <motion.img
                   key={activeHero.image}
                   src={activeHero.image}
                   alt={activeHero.shortName}
+                  width={1024}
+                  height={768}
                   custom={direction}
                   variants={bottleVariants}
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  className="absolute object-contain max-h-[calc(125%+50px)] md:max-h-[calc(155%+50px)] drop-shadow-[0_20px_50px_rgba(0,0,0,0.7)] z-10 bottom-0 md:bottom-[-2%] -translate-y-[10px]"
+                  className="absolute object-contain w-auto max-h-[75vh] md:max-h-[85vh] drop-shadow-[0_20px_50px_rgba(0,0,0,0.7)] z-10 bottom-0"
+                  style={{ imageRendering: 'auto' }}
                 />
               </AnimatePresence>
             </div>
