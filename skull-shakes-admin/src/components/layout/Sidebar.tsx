@@ -30,8 +30,6 @@ const navItems = [
 
   { href: "/pedidos", label: "Pedidos", icon: ShoppingBag },
 
-  { href: "/produtos", label: "Produtos", icon: Package },
-
 ];
 
 

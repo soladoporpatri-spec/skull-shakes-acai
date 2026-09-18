@@ -19,13 +19,14 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PackageOpen, Search, Eye, ChevronLeft, ChevronRight, ClockAlert } from "lucide-react";
+import { PackageOpen, Search, Eye, ChevronLeft, ChevronRight, ClockAlert, Truck, Store } from "lucide-react";
 import { Pedido, OrderStatus, PaymentStatus } from "@/types";
 import {
   formatCurrency,
   formatDate,
   orderStatusLabels,
-  paymentMethodLabels,
+  getPaymentMethodLabel,
+  getModalidadeLabel,
 } from "@/lib/formatters";
 import { OrderStatusBadge, PaymentStatusBadge } from "./StatusBadge";
 import { useUpdatePedidoStatus } from "@/hooks/usePedidos";
@@ -239,7 +240,7 @@ export default function PedidosTable({
                   const minutesDiff = differenceInMinutes(new Date(), dataPed);
                   const isAtrasado = minutesDiff > 120 && !['Delivered', 'Cancelled', 'Refunded'].includes(pedido.statusPedido);
                   const tempoFormatado = formatDistanceToNow(dataPed, { locale: ptBR });
-                  const modalidadeLabel = pedido.modalidadePagamento === 'OnDelivery' ? 'Na Entrega' : 'Retirada/Online';
+                  const modalidade = getModalidadeLabel(pedido.modalidadePagamento);
 
                   return (
                     <TableRow key={pedido.id}>
@@ -251,9 +252,12 @@ export default function PedidosTable({
                         </div>
                       </TableCell>
                       <TableCell className="font-medium">{formatCurrency(pedido.total)}</TableCell>
-                      <TableCell className="text-sm">{paymentMethodLabels[pedido.formaPagamento]}</TableCell>
+                      <TableCell className="text-sm font-medium">{getPaymentMethodLabel(pedido.formaPagamento)}</TableCell>
                       <TableCell className="text-sm">
-                        <span className="bg-secondary px-2 py-1 rounded text-xs">{modalidadeLabel}</span>
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium ${modalidade.icon === 'delivery' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'bg-orange-500/10 text-orange-400 border border-orange-500/20'}`}>
+                          {modalidade.icon === 'delivery' ? <Truck className="w-3 h-3" /> : <Store className="w-3 h-3" />}
+                          {modalidade.label}
+                        </span>
                       </TableCell>
                       <TableCell className="text-sm">
                         {isAtrasado ? (
